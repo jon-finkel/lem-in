@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/07 17:19:43 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/07 22:01:07 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static bool						add_room(t_lemin *lemin, const char *line,
 	struct s_room		*room;
 	struct s_room		**ptr;
 
-	if (ft_strchr(line, '-') || !(lemin->room_nb + 1))
+	if ((ft_strchr(line, '-') || !(_NB + 1)) && (_ROOM = g_vec->buff))
 		GIMME(true);
 	if (!(room = (struct s_room *)malloc(sizeof(struct s_room))))
 		ft_fatal("allocation failed");
@@ -37,7 +37,7 @@ static bool						add_room(t_lemin *lemin, const char *line,
 		errhdl(lemin, line, E_ROOMNOY);
 	room->y = ft_atoi(&line[lemin->debug_len]);
 	room->flag = flag;
-	room->nb = lemin->room_nb++;
+	room->nb = _NB++;
 	if (!(ptr = (struct s_room **)ft_vecpush(g_vec)))
 		ft_fatal("allocation failed");
 	*ptr = room;
@@ -57,14 +57,59 @@ static inline t_flag			get_flag(char **line)
 	GIMME(flag);
 }
 
-int								parse(t_lemin *lemin, bool links)
+static inline int				map_link(t_lemin *lemin, const char *line)
+{
+	int		k;
+	int		a;
+	int		b;
+
+	a = -1;
+	b = -1;
+	k = -1;
+	while (++k < _NB)
+	{
+		if (ft_strnequ(line, _ROOM[k]->name, lemin->debug_len))
+			a = k;
+		else if (ft_strequ(line + lemin->debug_len + 1, _ROOM[k]->name))
+			b = k;
+	}
+	if (a == -1 || b == -1)
+		ONOES;
+	_MATRIX[a][b] = true;
+	_MATRIX[b][a] = true;
+	KTHXBYE;
+}
+
+static int						do_matrix(t_lemin *lemin, const char *line)
+{
+	int		k;
+
+	if (line[0] == '#')
+		KTHXBYE;
+	if (!_MATRIX)
+	{
+		if (!(_MATRIX = (bool **)ft_memalloc(sizeof(bool *) * _NB)))
+			ft_fatal("allocation failed");
+		k = -1;
+		while (++k < _NB)
+			if (!(_MATRIX[k] = (bool *)ft_memalloc(sizeof(bool) * _NB)))
+				ft_fatal("allocation failed");
+	}
+	lemin->debug_len = 0;
+	while (line[lemin->debug_len] && line[lemin->debug_len] != '-')
+		++lemin->debug_len;
+	if (!line[lemin->debug_len + 1] || map_link(lemin, line) == -1)
+		ONOES;
+	KTHXBYE;
+}
+
+int								parse(t_lemin *lemin, bool links, t_flag flag)
 {
 	char		*line;
 	int			ret;
-	t_flag		flag;
 
 	EPICFAILZ(get_next_line(STDIN_FILENO, &line), -1);
-	if ((lemin->ants = ft_atoi(line)) < 1)
+	if ((_ANTS = ft_atoi(line)) < 1)
 		errhdl(lemin, line, E_FIRSTLINE);
 	ft_strdel(&line);
 	while ((ret = get_next_line(STDIN_FILENO, &line)))
@@ -74,13 +119,12 @@ int								parse(t_lemin *lemin, bool links)
 			MOAR;
 		if (line[0] == 'L')
 			NOMOAR;
-		else if (!links)
-			links = add_room(lemin, line, flag);
-		else if (links)
-			;
+		else if ((!links && (links = add_room(lemin, line, flag)))
+			|| links)
+			if (do_matrix(lemin, line) == -1)
+				NOMOAR;
 		flag = E_VOID;
 		ft_strdel(&line);
 	}
-	lemin->rooms = g_vec->buff;
 	KTHXBYE;
 }

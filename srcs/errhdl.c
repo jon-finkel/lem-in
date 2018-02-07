@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 11:10:01 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/07 16:53:28 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/07 21:16:51 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ static const char		*g_err[BUFF_SIZE] =
 
 void			errhdl(const t_lemin *lemin, const char *line, t_error err)
 {
-	if (err == E_FIRSTLINE && (line[0] == '0' || lemin->ants < 0))
+	if (err == E_FIRSTLINE && (line[0] == '0' || _ANTS < 0))
 		err = E_NOANTS;
-	if (lemin->debug)
+	if (_DEBUG)
 	{
 		ft_printf("%s\n%s\n", g_err[err], line);
 		ft_printf("{1d}%*c{eoc}\n", lemin->debug_len, '^');
 	}
 	else
-		ft_printf("ERROR");
+		ft_printf("ERROR\n");
 	exit(EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/07 16:12:58 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/07 22:12:46 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ int			main(int argc, const char *argv[])
 
 	if (!(lemin = (t_lemin *)ft_memalloc(sizeof(t_lemin))))
 		ft_fatal("allocation failed");
-	lemin->debug = usage(argc, argv);
-	if (parse(lemin, false) == -1)
+	_DEBUG = usage(argc, argv);
+	if (parse(lemin, false, E_VOID) == -1)
 		ft_fatal("allocation failed");
+	debug_output(lemin);
 	KTHXBYE;
 }
