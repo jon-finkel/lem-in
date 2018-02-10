@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/07 22:01:07 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/08 21:30:47 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ static inline int				map_link(t_lemin *lemin, const char *line)
 	k = -1;
 	while (++k < _NB)
 	{
-		if (ft_strnequ(line, _ROOM[k]->name, lemin->debug_len))
+		if (ft_strequ(line + lemin->debug_len + 1, _ROOM[k]->name))
 			a = k;
-		else if (ft_strequ(line + lemin->debug_len + 1, _ROOM[k]->name))
+		else if (ft_strnequ(line, _ROOM[k]->name, lemin->debug_len))
 			b = k;
 	}
 	if (a == -1 || b == -1)
@@ -100,6 +100,7 @@ static int						do_matrix(t_lemin *lemin, const char *line)
 		++lemin->debug_len;
 	if (!line[lemin->debug_len + 1] || map_link(lemin, line) == -1)
 		ONOES;
+	++_LINKS;
 	KTHXBYE;
 }
 

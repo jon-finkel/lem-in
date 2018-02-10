@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/07 22:12:32 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/08 21:30:15 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define BUFF_SIZE 4
 # define _ANTS lemin->ants
 # define _DEBUG lemin->debug
+# define _LINKS lemin->links
 # define _MATRIX lemin->matrix
 # define _NB lemin->room_nb
 # define _ROOM lemin->rooms
@@ -45,6 +46,7 @@ typedef struct		s_lemin
 	size_t			debug_len;
 	struct s_room	**rooms;
 	uint16_t		room_nb;
+	uint32_t		links;
 }					t_lemin;
 
 struct				s_room
