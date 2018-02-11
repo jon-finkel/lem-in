@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 10:50:56 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/07 14:53:50 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/11 17:15:48 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ static const char		*g_usage[2] =
 	" - the number of ants should fit in a signed integer\n"\
 	" - the next lines should respect the format [n x y] where:\n"\
 	"   * n is the name of the room\n"\
-	"   * room name can contain any printable character except '-' and ' ' "\
+	"   * a room name can contain any printable character except '-' and ' ' "\
 	"and must not begin with '#' or 'L'\n"\
+	"   * two rooms cannot have the same name\n"\
 	"   * x is a signed integer that represents the X axis of the room\n"\
 	"   * y is a signed integer that represents the Y axis of the room\n"\
+	"   * two rooms cannot have the same coordinates\n"\
 	" - the number of rooms should fit in an unsigned 16bits integer\n"\
 	" - preceding any room definition, a comment beginning by any number of "\
 	"hashtags can modify the properties of the following room:\n"\
@@ -66,4 +68,38 @@ inline bool			usage(int argc, const char *argv[])
 		exit(EXIT_SUCCESS);
 	}
 	GIMME(debug);
+}
+
+inline int			copy_line(t_lemin *lemin, char *line)
+{
+	FAILZ(lemin->file = ft_strcjoin(lemin->file, line, '\n', true), -1);
+	ft_strdel(&line);
+	KTHXBYE;
+}
+
+inline void			verif_entry(const t_lemin *lemin, const struct s_room *room,
+					const char *line)
+{
+	uint16_t		k;
+
+	k = UINT16_MAX;
+	while (++k < _NB)
+	{
+		if (ft_strequ(_ROOM[k]->name, room->name))
+			errhdl(lemin, _ROOM[k], line, E_SAMENAME);
+		else if (_ROOM[k]->x == room->x && _ROOM[k]->y == room->y)
+			errhdl(lemin, _ROOM[k], line, E_SAMEXY);
+	}
+}
+
+inline int			finish_read(t_lemin *lemin, char *line)
+{
+	int		ret;
+
+	if (copy_line(lemin, line) == -1)
+		ft_fatal("allocation failed");
+	while ((ret = get_next_line(STDIN_FILENO, &line)))
+		if (ret == -1 || copy_line(lemin, line) == -1)
+			ft_fatal("allocation failed");
+	KTHXBYE;
 }

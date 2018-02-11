@@ -6,22 +6,23 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/08 21:30:47 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/11 17:36:05 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
+#define BUFF_SIZE 4096
 
-t_vector		g_vec_null = {NULL, 0, 0, sizeof(struct s_map *)};
-t_vector		*g_vec = &g_vec_null;
+static t_vector		g_vec_null = {NULL, 0, 0, sizeof(struct s_map *)};
+static t_vector		*g_vec = &g_vec_null;
 
-static bool						add_room(t_lemin *lemin, const char *line,
-								const t_flag flag)
+static bool				add_room(t_lemin *lemin, const char *line,
+						const t_flag flag)
 {
 	struct s_room		*room;
 	struct s_room		**ptr;
 
-	if ((ft_strchr(line, '-') || !(_NB + 1)) && (_ROOM = g_vec->buff))
+	if (ft_strchr(line, '-') || !(_NB + 1))
 		GIMME(true);
 	if (!(room = (struct s_room *)malloc(sizeof(struct s_room))))
 		ft_fatal("allocation failed");
@@ -30,47 +31,68 @@ static bool						add_room(t_lemin *lemin, const char *line,
 		++lemin->debug_len;
 	room->name = ft_strndup(line, lemin->debug_len);
 	if (!line[(lemin->debug_len += 1)])
-		errhdl(lemin, line, E_ROOMNOXY);
+		errhdl(lemin, NULL, line, E_ROOMNOXY);
 	room->x = ft_atoi(&line[lemin->debug_len]);
-	lemin->debug_len += ft_intlen(room->x);
-	if (!line[(lemin->debug_len += 1)])
-		errhdl(lemin, line, E_ROOMNOY);
+	if (!line[(lemin->debug_len += ft_intlen(room->x) + 1)])
+		errhdl(lemin, NULL, line, E_ROOMNOY);
 	room->y = ft_atoi(&line[lemin->debug_len]);
 	room->flag = flag;
+	verif_entry(lemin, room, line);
 	room->nb = _NB++;
 	if (!(ptr = (struct s_room **)ft_vecpush(g_vec)))
 		ft_fatal("allocation failed");
 	*ptr = room;
+	_ROOM = g_vec->buff;
 	KTHXBYE;
 }
 
-static inline t_flag			get_flag(char **line)
+static t_flag			get_flag(t_lemin *lemin, char *line)
 {
-	t_flag		flag;
+	uint16_t		k;
+	t_flag			flag;
 
 	flag = E_VOID;
-	if (ft_strequ(*line, "##start"))
+	if (ft_strequ(line, "##start"))
+	{
+		k = UINT16_MAX;
+		while (++k < _NB)
+			if (_ROOM[k]->flag == E_START)
+				errhdl(lemin, _ROOM[k], line, E_MULTISTART);
+		_START = _NB;
 		flag = E_START;
-	else if (ft_strequ(*line, "##end"))
+	}
+	else if (ft_strequ(line, "##end"))
+	{
+		k = UINT16_MAX;
+		while (++k < _NB)
+			if (_ROOM[k]->flag == E_END)
+				errhdl(lemin, _ROOM[k], line, E_MULTIEND);
+		_END = _NB;
 		flag = E_END;
-	ft_strdel(line);
+	}
+	if (copy_line(lemin, line) == -1)
+		ft_fatal("allocation failed");
 	GIMME(flag);
 }
 
-static inline int				map_link(t_lemin *lemin, const char *line)
+static int				map_link(t_lemin *lemin, const char *line)
 {
-	int		k;
-	int		a;
-	int		b;
+	char		n1[BUFF_SIZE];
+	char		n2[BUFF_SIZE];
+	int			k;
+	int			a;
+	int			b;
 
+	ft_memnccpy(n1, line, (int)'-', BUFF_SIZE);
+	ft_snprintf(n2, BUFF_SIZE, "%s", line + lemin->debug_len + 1);
 	a = -1;
 	b = -1;
 	k = -1;
 	while (++k < _NB)
 	{
-		if (ft_strequ(line + lemin->debug_len + 1, _ROOM[k]->name))
+		if (ft_strequ(n1, _ROOM[k]->name))
 			a = k;
-		else if (ft_strnequ(line, _ROOM[k]->name, lemin->debug_len))
+		else if (ft_strequ(n2, _ROOM[k]->name))
 			b = k;
 	}
 	if (a == -1 || b == -1)
@@ -80,7 +102,7 @@ static inline int				map_link(t_lemin *lemin, const char *line)
 	KTHXBYE;
 }
 
-static int						do_matrix(t_lemin *lemin, const char *line)
+static int				do_matrix(t_lemin *lemin, const char *line)
 {
 	int		k;
 
@@ -104,28 +126,29 @@ static int						do_matrix(t_lemin *lemin, const char *line)
 	KTHXBYE;
 }
 
-int								parse(t_lemin *lemin, bool links, t_flag flag)
+int						parse(t_lemin *lemin, bool links, t_flag flag)
 {
 	char		*line;
 	int			ret;
 
 	EPICFAILZ(get_next_line(STDIN_FILENO, &line), -1);
 	if ((_ANTS = ft_atoi(line)) < 1)
-		errhdl(lemin, line, E_FIRSTLINE);
-	ft_strdel(&line);
+		errhdl(lemin, NULL, line, E_FIRSTLINE);
+	EPICFAILZ(copy_line(lemin, line), -1);
 	while ((ret = get_next_line(STDIN_FILENO, &line)))
 	{
 		EPICFAILZ(ret, -1);
-		if (!links && line[0] == '#' && (flag = get_flag(&line)))
+		if (!links && line[0] == '#' && (flag = get_flag(lemin, line)))
 			MOAR;
-		if (line[0] == 'L')
+		if (line[0] == 'L' && !finish_read(lemin, line))
 			NOMOAR;
-		else if ((!links && (links = add_room(lemin, line, flag)))
-			|| links)
-			if (do_matrix(lemin, line) == -1)
+		else if ((!links && (links = add_room(lemin, line, flag))) || links)
+			if (do_matrix(lemin, line) == -1 && !finish_read(lemin, line))
 				NOMOAR;
 		flag = E_VOID;
-		ft_strdel(&line);
+		EPICFAILZ(copy_line(lemin, line), -1);
 	}
+	if (line)
+		ft_strdel(&line);
 	KTHXBYE;
 }

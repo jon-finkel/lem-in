@@ -6,19 +6,21 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 22:12:52 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/08 21:32:52 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/11 18:23:22 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-static const char		*g_debug[5] =
+static const char		*g_debug[7] =
 {
-	"---------- DEBUG MODE ENABLED ----------",
-	"- Data:",
-	"- Rooms ID:",
-	"- Adjacency matrix:",
-	"0 1 2 3 4 5 6 7 8 9 "
+	"---------- DEBUG MODE ENABLED ----------\n",
+	"- Data:\n",
+	"- Rooms ID:\n",
+	"- Adjacency matrix:\n",
+	"0 1 2 3 4 5 6 7 8 9 ",
+	"- Possible paths:\n",
+	"- Chosen paths:\n"
 };
 
 static void			display_matrix(const t_lemin *lemin, size_t len, int k,
@@ -26,7 +28,7 @@ static void			display_matrix(const t_lemin *lemin, size_t len, int k,
 {
 	uint16_t	nb;
 
-	ft_printf("\n{1c}%s{eoc}\n\n%*.c", g_debug[3], len, ' ');
+	ft_printf("\n{1c}%s{eoc}\n%*.c", g_debug[3], len, ' ');
 	nb = _NB;
 	while (nb >= 10 && ft_printf("%s", g_debug[4]))
 		nb -= 10;
@@ -47,18 +49,17 @@ static void			display_matrix(const t_lemin *lemin, size_t len, int k,
 				ft_printf(" {1a}0{eoc}");
 		}
 	}
-	write(STDOUT_FILENO, "\n", 1);
 }
 
 static void			display_rooms(const t_lemin *lemin, const size_t len)
 {
 	int		k;
 
-	ft_printf("{1c}%s{eoc}\n\n", g_debug[1]);
+	ft_printf("{1c}%s{eoc}\n", g_debug[1]);
 	ft_printf("Number of ants - %d\n", _ANTS);
 	ft_printf("Number of rooms - %hu\n", _NB);
 	ft_printf("Number of links - %zu\n", _LINKS);
-	ft_printf("\n{1c}%s{eoc}\n\n", g_debug[2]);
+	ft_printf("\n{1c}%s{eoc}\n", g_debug[2]);
 	k = -1;
 	while (++k < _NB)
 	{
@@ -71,11 +72,48 @@ static void			display_rooms(const t_lemin *lemin, const size_t len)
 	}
 }
 
-void				debug_output(t_lemin *lemin)
+static void			display_paths(const t_list *list, const t_lemin *lemin)
 {
-	if (!_DEBUG)
-		BYEZ;
-	ft_printf("\n{c}%s{eoc}\n\n", g_debug[0]);
+	uint16_t		k;
+
+	ft_printf("\n\n{1c}%s{eoc}\n", g_debug[5]);
+	ft_printf("There are {1c}%lu{eoc} possible paths:\n\n", ft_lstsize(list));
+	while (list)
+	{
+		k = UINT16_MAX;
+		while (++k < _LIST->len)
+		{
+			ft_printf("%s ", _ROOM[_LIST->rooms[k]]->name);
+			if (k < _LIST->len - 1)
+				ft_printf("{1a}->{eoc} ");
+			else
+				write(STDOUT_FILENO, "\n", 1);
+		}
+		list = list->next;
+	}
+}
+
+void				debug_output(const t_list *list, const t_lemin *lemin)
+{
+	uintmax_t		k;
+	uint16_t		p;
+
+	ft_printf("{c}%s{eoc}\n", g_debug[0]);
 	display_rooms(lemin, ft_intlen(_NB));
 	display_matrix(lemin, ft_intlen(_NB) + 3, -1, -1);
+	display_paths(list, lemin);
+	ft_printf("\n{1c}%s{eoc}\n", g_debug[6]);
+	k = UINTMAX_MAX;
+	while (_PATH[++k])
+	{
+		p = UINT16_MAX;
+		while (++p < _PATH[k]->len)
+		{
+			ft_printf("%s ", _ROOM[_PATH[k]->rooms[p]]->name);
+			if (p < _PATH[k]->len - 1)
+				ft_printf("{1a}->{eoc} ");
+			else
+				write(STDOUT_FILENO, "\n", 1);
+		}
+	}
 }
