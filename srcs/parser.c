@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/12 12:51:27 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/12 19:35:42 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,10 @@ static bool				add_room(t_lemin *lemin, const char *line,
 						const t_flag flag)
 {
 	struct s_room		*room;
-	struct s_room		**ptr;
 
 	if (ft_strchr(line, '-') || !(_NB + 1))
 		GIMME(true);
-	if (!(room = (struct s_room *)malloc(sizeof(struct s_room))))
-		ft_fatal("allocation failed");
+	room = (struct s_room *)ft_wralloc(sizeof(struct s_room));
 	lemin->debug_len = 0;
 	while (line[lemin->debug_len] && line[lemin->debug_len] != ' ')
 		++lemin->debug_len;
@@ -39,9 +37,7 @@ static bool				add_room(t_lemin *lemin, const char *line,
 	room->flag = flag;
 	verif_entry(lemin, room, line);
 	room->nb = _NB++;
-	if (!(ptr = (struct s_room **)ft_vecpush(g_vec)))
-		ft_fatal("allocation failed");
-	*ptr = room;
+	*(struct s_room **)ft_vecpush(g_vec) = room;
 	_ROOM = g_vec->buff;
 	KTHXBYE;
 }
@@ -70,8 +66,7 @@ static t_flag			get_flag(t_lemin *lemin, char *line)
 		_END = _NB;
 		flag = E_END;
 	}
-	if (copy_line(lemin, line) == -1)
-		ft_fatal("allocation failed");
+	copy_line(lemin, line);
 	GIMME(flag);
 }
 
@@ -110,12 +105,10 @@ static int				do_matrix(t_lemin *lemin, const char *line)
 		KTHXBYE;
 	if (!_MATRIX)
 	{
-		if (!(_MATRIX = (bool **)ft_memalloc(sizeof(bool *) * _NB)))
-			ft_fatal("allocation failed");
+		_MATRIX = (bool **)ft_memalloc(sizeof(bool *) * _NB);
 		k = -1;
 		while (++k < _NB)
-			if (!(_MATRIX[k] = (bool *)ft_memalloc(sizeof(bool) * _NB)))
-				ft_fatal("allocation failed");
+			_MATRIX[k] = (bool *)ft_memalloc(sizeof(bool) * _NB);
 	}
 	lemin->debug_len = 0;
 	while (line[lemin->debug_len] && line[lemin->debug_len] != '-')
@@ -126,7 +119,7 @@ static int				do_matrix(t_lemin *lemin, const char *line)
 	KTHXBYE;
 }
 
-int						parse(t_lemin *lemin, bool links, t_flag flag)
+void					parse(t_lemin *lemin, bool links, t_flag flag)
 {
 	char		*line;
 
@@ -148,5 +141,4 @@ int						parse(t_lemin *lemin, bool links, t_flag flag)
 	}
 	if (line)
 		ft_strdel(&line);
-	KTHXBYE;
 }

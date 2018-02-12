@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 18:04:45 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/12 12:49:18 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/12 19:33:48 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int			compare_len(void *data1, void *data2)
 	GIMME(((struct s_path *)(data1))->len > ((struct s_path *)(data2))->len);
 }
 
-static int			dfs_traversal(t_list **alst, const t_lemin *lemin,
+static void			dfs_traversal(t_list **alst, const t_lemin *lemin,
 					struct s_path *path, uint16_t x)
 {
 	t_list			*newlink;
@@ -30,7 +30,7 @@ static int			dfs_traversal(t_list **alst, const t_lemin *lemin,
 		newlink = ft_lstnew(path, sizeof(struct s_path));
 		ft_lstinsert(alst, newlink, &compare_len);
 		path->rooms[--path->len] = 0;
-		KTHXBYE;
+		BYEZ;
 	}
 	k = UINT16_MAX;
 	while (++k < _NB)
@@ -44,7 +44,6 @@ static int			dfs_traversal(t_list **alst, const t_lemin *lemin,
 				dfs_traversal(alst, lemin, path, k);
 		}
 	path->rooms[--path->len] = 0;
-	KTHXBYE;
 }
 
 int					dfs_init(t_list **alst, const t_lemin *lemin)

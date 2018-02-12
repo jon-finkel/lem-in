@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/12 12:53:18 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/12 19:49:56 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,14 @@ struct				s_path
 	uint16_t		len;
 };
 
-int					copy_line(t_lemin *lemin, char *line);
+extern void			copy_line(t_lemin *lemin, char *line);
 void				debug_output(const t_list *list, const t_lemin *lemin);
 int					dfs_init(t_list **alst, const t_lemin *lemin);
 void				errhdl(const t_lemin *lemin, const struct s_room *room,
 					const char *line, t_error err);
-int					finish_read(t_lemin *lemin, char *line);
+extern int			finish_read(t_lemin *lemin, char *line);
 void				move(const t_lemin *lemin);
-int					parse(t_lemin *lemin, bool links, t_flag flag);
+extern void			parse(t_lemin *lemin, bool links, t_flag flag);
 bool				usage(int argc, const char *argv[]);
 void				verif_entry(const t_lemin *lemin, const struct s_room *room,
 					const char *line);

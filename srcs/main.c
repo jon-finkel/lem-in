@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/12 16:02:20 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/12 19:48:35 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,19 +71,17 @@ int					main(int argc, const char *argv[])
 	t_list		*list;
 	t_lemin		*lemin;
 
-	if (!(lemin = (t_lemin *)ft_memalloc(sizeof(t_lemin))))
-		ft_fatal("allocation failed");
+	lemin = (t_lemin *)ft_memalloc(sizeof(t_lemin));
 	_DEBUG = usage(argc, argv);
 	_END = UINT32_MAX;
 	_START = UINT32_MAX;
 	list = NULL;
-	if (!(lemin->file = ft_strnew(0)) || parse(lemin, false, E_VOID)
-		|| dfs_init(&list, lemin) == -1)
-		ft_fatal("allocation failed");
+	lemin->file = ft_strnew(0);
+	parse(lemin, false, E_VOID);
+	dfs_init(&list, lemin);
 	if (!list)
 		errhdl(lemin, NULL, NULL, E_NOSOLUTION);
-	if (choose_path(lemin, list) == -1)
-		ft_fatal("allocation failed");
+	choose_path(lemin, list);
 	print_debug_and_clean(list, lemin);
 //	move(lemin);
 	KTHXBYE;
