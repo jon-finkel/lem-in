@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/11 18:13:14 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/12 12:53:18 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,16 @@ struct				s_path
 	uint16_t		len;
 };
 
-extern int			copy_line(t_lemin *lemin, char *line);
-extern void			debug_output(const t_list *list, const t_lemin *lemin);
-extern int			dfs_init(t_list **alst, const t_lemin *lemin);
-extern void			errhdl(const t_lemin *lemin, const struct s_room *room,
+int					copy_line(t_lemin *lemin, char *line);
+void				debug_output(const t_list *list, const t_lemin *lemin);
+int					dfs_init(t_list **alst, const t_lemin *lemin);
+void				errhdl(const t_lemin *lemin, const struct s_room *room,
 					const char *line, t_error err);
-extern int			finish_read(t_lemin *lemin, char *line);
-extern int			parse(t_lemin *lemin, bool links, t_flag flag);
-extern bool			usage(int argc, const char *argv[]);
-extern void			verif_entry(const t_lemin *lemin, const struct s_room *room,
+int					finish_read(t_lemin *lemin, char *line);
+void				move(const t_lemin *lemin);
+int					parse(t_lemin *lemin, bool links, t_flag flag);
+bool				usage(int argc, const char *argv[]);
+void				verif_entry(const t_lemin *lemin, const struct s_room *room,
 					const char *line);
 
 #endif

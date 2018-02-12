@@ -6,13 +6,13 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 22:12:52 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/11 18:23:22 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/11 20:44:55 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-static const char		*g_debug[7] =
+static const char		*g_debug[8] =
 {
 	"---------- DEBUG MODE ENABLED ----------\n",
 	"- Data:\n",
@@ -20,7 +20,8 @@ static const char		*g_debug[7] =
 	"- Adjacency matrix:\n",
 	"0 1 2 3 4 5 6 7 8 9 ",
 	"- Possible paths:\n",
-	"- Chosen paths:\n"
+	"- Chosen paths:\n",
+	"---------- END OF DEBUG MODE -----------\n"
 };
 
 static void			display_matrix(const t_lemin *lemin, size_t len, int k,
@@ -116,4 +117,5 @@ void				debug_output(const t_list *list, const t_lemin *lemin)
 				write(STDOUT_FILENO, "\n", 1);
 		}
 	}
+	ft_printf("\n{c}%s{eoc}\n", g_debug[7]);
 }

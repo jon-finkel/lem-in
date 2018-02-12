@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/11 17:36:05 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/12 12:51:27 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,15 +129,13 @@ static int				do_matrix(t_lemin *lemin, const char *line)
 int						parse(t_lemin *lemin, bool links, t_flag flag)
 {
 	char		*line;
-	int			ret;
 
-	EPICFAILZ(get_next_line(STDIN_FILENO, &line), -1);
+	get_next_line(STDIN_FILENO, &line);
 	if ((_ANTS = ft_atoi(line)) < 1)
 		errhdl(lemin, NULL, line, E_FIRSTLINE);
-	EPICFAILZ(copy_line(lemin, line), -1);
-	while ((ret = get_next_line(STDIN_FILENO, &line)))
+	copy_line(lemin, line);
+	while (get_next_line(STDIN_FILENO, &line))
 	{
-		EPICFAILZ(ret, -1);
 		if (!links && line[0] == '#' && (flag = get_flag(lemin, line)))
 			MOAR;
 		if (line[0] == 'L' && !finish_read(lemin, line))
@@ -146,7 +144,7 @@ int						parse(t_lemin *lemin, bool links, t_flag flag)
 			if (do_matrix(lemin, line) == -1 && !finish_read(lemin, line))
 				NOMOAR;
 		flag = E_VOID;
-		EPICFAILZ(copy_line(lemin, line), -1);
+		copy_line(lemin, line);
 	}
 	if (line)
 		ft_strdel(&line);

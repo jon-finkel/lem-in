@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/11 19:06:26 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/12 16:02:20 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static void			print_debug_and_clean(t_list *list, t_lemin *lemin)
 	while (++k < _NB)
 		free(_MATRIX[k]);
 	ft_memdel((void **)&_MATRIX);
-	ft_lstdel(&list, &ft_lstfree);
 }
 
 static bool			check_collision(const t_lemin *lemin, struct s_path *path)
@@ -55,14 +54,11 @@ static bool			check_collision(const t_lemin *lemin, struct s_path *path)
 
 static int			choose_path(t_lemin *lemin, const t_list *list)
 {
-	struct s_path		**ptr;
-
 	while (list)
 	{
 		if (!check_collision(lemin, _LIST))
 		{
-			FAILZ(ptr = (struct s_path **)ft_vecpush(g_vec), -1);
-			*ptr = _LIST;
+			*(struct s_path **)ft_vecpush(g_vec) = _LIST;
 			_PATH = g_vec->buff;
 		}
 		list = list->next;
@@ -89,5 +85,6 @@ int					main(int argc, const char *argv[])
 	if (choose_path(lemin, list) == -1)
 		ft_fatal("allocation failed");
 	print_debug_and_clean(list, lemin);
+//	move(lemin);
 	KTHXBYE;
 }

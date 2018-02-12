@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 10:50:56 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/11 17:15:48 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/12 12:52:41 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static const char		*g_usage[2] =
 	" - program will still try to proceed with the valid lines acquired\n"
 };
 
-inline bool			usage(int argc, const char *argv[])
+bool			usage(int argc, const char *argv[])
 {
 	bool		debug;
 
@@ -70,15 +70,15 @@ inline bool			usage(int argc, const char *argv[])
 	GIMME(debug);
 }
 
-inline int			copy_line(t_lemin *lemin, char *line)
+int				copy_line(t_lemin *lemin, char *line)
 {
-	FAILZ(lemin->file = ft_strcjoin(lemin->file, line, '\n', true), -1);
+	lemin->file = ft_strcjoin(lemin->file, line, '\n', true);
 	ft_strdel(&line);
 	KTHXBYE;
 }
 
-inline void			verif_entry(const t_lemin *lemin, const struct s_room *room,
-					const char *line)
+void			verif_entry(const t_lemin *lemin, const struct s_room *room,
+				const char *line)
 {
 	uint16_t		k;
 
@@ -92,7 +92,7 @@ inline void			verif_entry(const t_lemin *lemin, const struct s_room *room,
 	}
 }
 
-inline int			finish_read(t_lemin *lemin, char *line)
+int				finish_read(t_lemin *lemin, char *line)
 {
 	int		ret;
 
@@ -102,4 +102,9 @@ inline int			finish_read(t_lemin *lemin, char *line)
 		if (ret == -1 || copy_line(lemin, line) == -1)
 			ft_fatal("allocation failed");
 	KTHXBYE;
+}
+
+void			ft_errhdl(void)
+{
+	ft_fatal("allocation failed");
 }
