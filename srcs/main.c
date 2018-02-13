@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/12 19:48:35 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/13 07:44:11 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,6 @@ int					main(int argc, const char *argv[])
 		errhdl(lemin, NULL, NULL, E_NOSOLUTION);
 	choose_path(lemin, list);
 	print_debug_and_clean(list, lemin);
-//	move(lemin);
+	move(lemin);
 	KTHXBYE;
 }

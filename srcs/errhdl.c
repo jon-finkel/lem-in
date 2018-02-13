@@ -6,11 +6,13 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 11:10:01 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/11 17:33:12 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/13 08:09:17 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
+#include <string.h>
+#include <errno.h>
 
 static const char		*g_err[ERRNUM] =
 {
@@ -26,6 +28,13 @@ static const char		*g_err[ERRNUM] =
 	"First line should be a valid number of ants.",
 	"Number of ants is invalid."
 };
+
+_Noreturn void			ft_errhdl(int errcode)
+{
+	if (errcode == ENOMEM)
+		ft_putendl_fd("Cannot allocate memory", STDERR_FILENO);
+	exit(EXIT_FAILURE);
+}
 
 _Noreturn void			errhdl(const t_lemin *lemin, const struct s_room *room,
 						const char *line, t_error err)
