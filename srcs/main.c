@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/13 07:44:11 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/13 11:16:29 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ static bool			check_collision(const t_lemin *lemin, struct s_path *path)
 	uint16_t		p;
 	uint16_t		q;
 
-	if (!_PATH)
-		KTHXBYE;
 	k = 0;
 	while (++k < path->len - 1)
 	{
@@ -56,7 +54,7 @@ static int			choose_path(t_lemin *lemin, const t_list *list)
 {
 	while (list)
 	{
-		if (!check_collision(lemin, _LIST))
+		if (!_PATH || !check_collision(lemin, _LIST))
 		{
 			*(struct s_path **)ft_vecpush(g_vec) = _LIST;
 			_PATH = g_vec->buff;
