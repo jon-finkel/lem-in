@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 18:04:45 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/15 09:13:16 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/15 15:56:02 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,6 @@ int					dfs_init(t_list **alst, const t_lemin *lemin, bool *check)
 	t_dfs				dfs;
 	uint16_t			k;
 
-	if (_START == UINT32_MAX)
-		errhdl(lemin, NULL, NULL, E_NOSTART);
-	if (_END == UINT32_MAX)
-		errhdl(lemin, NULL, NULL, E_NOEND);
 	path = (struct s_path *)ft_memalloc(sizeof(struct s_path));
 	path->rooms[path->len++] = _START;
 	dfs.check = check;

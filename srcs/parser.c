@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/14 08:00:57 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/15 16:09:15 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,30 +47,22 @@ static bool				add_room(t_lemin *lemin, const char *line,
 
 static t_flag			get_flag(t_lemin *lemin, char *line)
 {
-	uint16_t		k;
-	t_flag			flag;
-
-	flag = E_VOID;
+	copy_line(lemin, line);
 	if (ft_strequ(line, "##start"))
 	{
-		k = UINT16_MAX;
-		while (++k < _NB)
-			if (_ROOM[k]->flag == E_START)
-				errhdl(lemin, _ROOM[k], line, E_MULTISTART);
+		if (_START != UINT32_MAX)
+			errhdl(lemin, NULL, line, E_MULTISTART);
 		_START = _NB;
-		flag = E_START;
+		GIMME(E_START);
 	}
 	else if (ft_strequ(line, "##end"))
 	{
-		k = UINT16_MAX;
-		while (++k < _NB)
-			if (_ROOM[k]->flag == E_END)
-				errhdl(lemin, _ROOM[k], line, E_MULTIEND);
+		if (_END != UINT32_MAX)
+			errhdl(lemin, NULL, line, E_MULTIEND);
 		_END = _NB;
-		flag = E_END;
+		GIMME(E_END);
 	}
-	copy_line(lemin, line);
-	GIMME(flag);
+	GIMME(E_VOID);
 }
 
 static int				map_link(t_lemin *lemin, const char *line)
@@ -137,7 +129,7 @@ void					parse(t_lemin *lemin, bool links, t_flag flag)
 	{
 		if (!links && line[0] == '#' && (flag = get_flag(lemin, line)))
 			MOAR;
-		if (line[0] == 'L' && !finish_read(lemin, line))
+		else if (line[0] == 'L' && !finish_read(lemin, line))
 			NOMOAR;
 		else if ((!links && (links = add_room(lemin, line, flag))) || links)
 			if (do_matrix(lemin, line) == -1 && !finish_read(lemin, line))

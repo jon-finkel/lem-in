@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 11:10:01 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/14 16:16:19 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/15 16:07:29 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 static const char		*g_err[ERRNUM] =
 {
 	"The map doesn't have any links",
-	"The map has multiple ending points",
 	"The map has multiple starting points",
+	"The map has multiple ending points",
 	"The map doesn't have a starting point",
 	"The map doesn't have an ending point",
 	"Two rooms have the same coordinates",

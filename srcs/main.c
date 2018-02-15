@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/15 09:12:54 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/15 15:56:11 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ int					main(int argc, const char *argv[])
 	lemin->debug_len = -1;
 	lemin->debug_line = 1;
 	parse(lemin, false, E_VOID);
+	if (_START == UINT32_MAX || _END == UINT32_MAX)
+		errhdl(lemin, NULL, NULL, _END == UINT32_MAX ? E_NOEND : E_NOSTART);
 	check = (bool *)ft_memalloc(sizeof(bool) * _NB);
 	check[_START] = true;
 	dfs_init(&list, lemin, check);
