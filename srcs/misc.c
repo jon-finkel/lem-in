@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 10:50:56 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/12 19:29:45 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/14 07:41:11 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ bool			usage(int argc, const char *argv[])
 void			copy_line(t_lemin *lemin, char *line)
 {
 	lemin->file = ft_strcjoin(lemin->file, line, '\n', true);
+	++lemin->debug_line;
 	ft_strdel(&line);
 }
 

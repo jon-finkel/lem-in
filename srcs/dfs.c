@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 18:04:45 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/12 19:33:48 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/15 09:13:16 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,50 +17,50 @@ static int			compare_len(void *data1, void *data2)
 	GIMME(((struct s_path *)(data1))->len > ((struct s_path *)(data2))->len);
 }
 
-static void			dfs_traversal(t_list **alst, const t_lemin *lemin,
-					struct s_path *path, uint16_t x)
+static void			dfs_search(t_dfs *dfs, struct s_path *path, uintmax_t depth,
+					uint16_t x)
 {
 	t_list			*newlink;
 	uint16_t		k;
-	uint16_t		p;
 
 	path->rooms[path->len++] = x;
-	if (x == _END)
+	dfs->check[x] = true;
+	if (x == dfs->_END)
 	{
 		newlink = ft_lstnew(path, sizeof(struct s_path));
-		ft_lstinsert(alst, newlink, &compare_len);
-		path->rooms[--path->len] = 0;
-		BYEZ;
+		ft_lstinsert(dfs->alst, newlink, &compare_len);
 	}
-	k = UINT16_MAX;
-	while (++k < _NB)
-		if (_MATRIX[x][k])
-		{
-			p = UINT16_MAX;
-			while (++p < path->len)
-				if (path->rooms[p] == k)
-					NOMOAR;
-			if (p == path->len)
-				dfs_traversal(alst, lemin, path, k);
-		}
+	else
+	{
+		k = UINT16_MAX;
+		while (++k < dfs->_NB)
+			if (dfs->_MATRIX[x][k] && dfs->check[k] == false)
+				dfs_search(dfs, path, ++depth, k);
+	}
 	path->rooms[--path->len] = 0;
+	dfs->check[x] = false;
 }
 
-int					dfs_init(t_list **alst, const t_lemin *lemin)
+int					dfs_init(t_list **alst, const t_lemin *lemin, bool *check)
 {
 	struct s_path		*path;
+	t_dfs				dfs;
 	uint16_t			k;
 
 	if (_START == UINT32_MAX)
 		errhdl(lemin, NULL, NULL, E_NOSTART);
 	if (_END == UINT32_MAX)
 		errhdl(lemin, NULL, NULL, E_NOEND);
-	k = UINT16_MAX;
 	path = (struct s_path *)ft_memalloc(sizeof(struct s_path));
 	path->rooms[path->len++] = _START;
+	dfs.check = check;
+	dfs.lemin = lemin;
+	dfs.alst = alst;
+	dfs.limit = UINTMAX_MAX;
+	k = UINT16_MAX;
 	while (++k < _NB)
 		if (_MATRIX[_START][k])
-			dfs_traversal(alst, lemin, path, k);
+			dfs_search(&dfs, path, 0, k);
 	ft_memdel((void **)&path);
 	KTHXBYE;
 }

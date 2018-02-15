@@ -6,16 +6,18 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 11:10:01 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/13 08:09:17 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/14 16:16:19 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 #include <string.h>
 #include <errno.h>
+#define _LINE lemin->debug_line
 
 static const char		*g_err[ERRNUM] =
 {
+	"The map doesn't have any links",
 	"The map has multiple ending points",
 	"The map has multiple starting points",
 	"The map doesn't have a starting point",
@@ -25,6 +27,7 @@ static const char		*g_err[ERRNUM] =
 	"This map has no solution",
 	"Room definition is invalid (no Y axis)",
 	"Room definition is invalid (no coordinates)",
+	"Room definition is invalid (too many coordinates)",
 	"First line should be a valid number of ants.",
 	"Number of ants is invalid."
 };
@@ -44,13 +47,8 @@ _Noreturn void			errhdl(const t_lemin *lemin, const struct s_room *room,
 	if (_DEBUG)
 	{
 		ft_dprintf(STDERR_FILENO, "ERROR: %s\n", g_err[err]);
-		if (err != E_NOSOLUTION && err != E_NOSTART && err != E_NOEND
-			&& err != E_MULTISTART && err != E_MULTIEND)
-			ft_dprintf(STDERR_FILENO, "%s\n", line);
-		if (err != E_NOSOLUTION && err != E_SAMEXY && err != E_SAMENAME
-			&& err != E_NOSTART && err != E_NOEND && err != E_MULTISTART
-			&& err != E_MULTIEND)
-			ft_dprintf(STDERR_FILENO, "{1d}%*c{eoc}\n", lemin->debug_len, '^');
+		if (err >= E_SAMEXY && err != E_NOSOLUTION)
+			ft_dprintf(STDERR_FILENO, "LINE[%lu]: %s\n", _LINE, line);
 		if (err == E_SAMEXY || err == E_SAMENAME)
 			ft_dprintf(STDERR_FILENO, "%s %d %d\n", room->name, room->x,\
 				room->y);

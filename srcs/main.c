@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/13 11:16:29 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/15 09:12:54 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static int			choose_path(t_lemin *lemin, const t_list *list)
 
 int					main(int argc, const char *argv[])
 {
+	bool		*check;
 	t_list		*list;
 	t_lemin		*lemin;
 
@@ -75,12 +76,16 @@ int					main(int argc, const char *argv[])
 	_START = UINT32_MAX;
 	list = NULL;
 	lemin->file = ft_strnew(0);
+	lemin->debug_len = -1;
+	lemin->debug_line = 1;
 	parse(lemin, false, E_VOID);
-	dfs_init(&list, lemin);
+	check = (bool *)ft_memalloc(sizeof(bool) * _NB);
+	check[_START] = true;
+	dfs_init(&list, lemin, check);
 	if (!list)
 		errhdl(lemin, NULL, NULL, E_NOSOLUTION);
 	choose_path(lemin, list);
 	print_debug_and_clean(list, lemin);
-	move(lemin);
+	move(lemin, check);
 	KTHXBYE;
 }

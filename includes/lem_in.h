@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/13 07:55:44 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/15 09:04:28 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@
 
 typedef enum		s_error
 {
-	E_MULTISTART = 0,
+	E_NOLINKS = 0,
+	E_MULTISTART = E_NOLINKS + 1,
 	E_MULTIEND = E_MULTISTART + 1,
 	E_NOSTART = E_MULTIEND + 1,
 	E_NOEND = E_NOSTART + 1,
@@ -37,7 +38,8 @@ typedef enum		s_error
 	E_NOSOLUTION = E_SAMENAME + 1,
 	E_ROOMNOY = E_NOSOLUTION + 1,
 	E_ROOMNOXY = E_ROOMNOY + 1,
-	E_FIRSTLINE = E_ROOMNOXY + 1,
+	E_ROOMZ = E_ROOMNOXY + 1,
+	E_FIRSTLINE = E_ROOMZ + 1,
 	E_NOANTS = E_FIRSTLINE + 1
 }					t_error;
 
@@ -57,6 +59,7 @@ typedef struct		s_lemin
 	char			*file;
 	int				ants;
 	size_t			debug_len;
+	size_t			debug_line;
 	struct s_path	**paths;
 	struct s_room	**rooms;
 	uint16_t		room_nb;
@@ -64,6 +67,14 @@ typedef struct		s_lemin
 	uint32_t		start;
 	uintmax_t		links;
 }					t_lemin;
+
+typedef struct		s_dfs
+{
+	bool			*check;
+	const t_lemin	*lemin;
+	t_list			**alst;
+	uintmax_t		limit;
+}					t_dfs;
 
 struct				s_room
 {
@@ -82,11 +93,11 @@ struct				s_path
 
 extern void			copy_line(t_lemin *lemin, char *line);
 void				debug_output(const t_list *list, const t_lemin *lemin);
-int					dfs_init(t_list **alst, const t_lemin *lemin);
+int					dfs_init(t_list **alst, const t_lemin *lemin, bool *check);
 void				errhdl(const t_lemin *lemin, const struct s_room *room,
 					const char *line, t_error err);
 extern int			finish_read(t_lemin *lemin, char *line);
-void				move(const t_lemin *lemin);
+void				move(const t_lemin *lemin, bool *check);
 extern void			parse(t_lemin *lemin, bool links, t_flag flag);
 bool				usage(int argc, const char *argv[]);
 void				verif_entry(const t_lemin *lemin, const struct s_room *room,

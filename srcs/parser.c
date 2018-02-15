@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/12 19:35:42 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/14 08:00:57 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,15 @@ static bool				add_room(t_lemin *lemin, const char *line,
 	while (line[lemin->debug_len] && line[lemin->debug_len] != ' ')
 		++lemin->debug_len;
 	room->name = ft_strndup(line, lemin->debug_len);
-	if (!line[(lemin->debug_len += 1)])
+	if (!line[(lemin->debug_len += 1)] || !ft_isdigit(line[lemin->debug_len]))
 		errhdl(lemin, NULL, line, E_ROOMNOXY);
 	room->x = ft_atoi(&line[lemin->debug_len]);
-	if (!line[(lemin->debug_len += ft_intlen(room->x) + 1)])
+	if (!line[(lemin->debug_len += ft_intlen(room->x) + 1)]
+		|| !ft_isdigit(line[lemin->debug_len]))
 		errhdl(lemin, NULL, line, E_ROOMNOY);
 	room->y = ft_atoi(&line[lemin->debug_len]);
+	if (line[lemin->debug_len + ft_intlen(room->y)])
+		errhdl(lemin, NULL, line, E_ROOMZ);
 	room->flag = flag;
 	verif_entry(lemin, room, line);
 	room->nb = _NB++;
@@ -124,7 +127,10 @@ void					parse(t_lemin *lemin, bool links, t_flag flag)
 	char		*line;
 
 	get_next_line(STDIN_FILENO, &line);
-	if ((_ANTS = ft_atoi(line)) < 1)
+	while (line[++lemin->debug_len])
+		if (!ft_isdigit(line[lemin->debug_len]))
+			errhdl(lemin, NULL, line, E_FIRSTLINE);
+	if (ft_strlen(line) > 10 || (_ANTS = ft_atoi(line)) < 1)
 		errhdl(lemin, NULL, line, E_FIRSTLINE);
 	copy_line(lemin, line);
 	while (get_next_line(STDIN_FILENO, &line))
@@ -139,6 +145,8 @@ void					parse(t_lemin *lemin, bool links, t_flag flag)
 		flag = E_VOID;
 		copy_line(lemin, line);
 	}
+	if (!lemin->links)
+		errhdl(lemin, NULL, line, E_NOLINKS);
 	if (line)
 		ft_strdel(&line);
 }
