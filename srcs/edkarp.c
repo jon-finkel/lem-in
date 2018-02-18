@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 08:14:23 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/18 15:14:06 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/18 15:32:08 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,6 @@ static void						dqtor(void *data, size_t data_size)
 {
 	ft_memset(data, '\0', data_size);
 	free(data);
-}
-
-void		ft_deqdel(t_deque **adeq, t_dqtor dqtor)
-{
-	t_dlist		*head;
-	t_dlist		*tmp;
-
-	head = (*adeq)->head;
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		dqtor(tmp->data, tmp->data_size);
-		free(tmp);
-	}
-	free(*adeq);
 }
 
 static struct s_path			*clear_deque(t_deque *deque)
