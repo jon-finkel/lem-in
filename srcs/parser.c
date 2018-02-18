@@ -6,14 +6,14 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/15 16:09:15 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/18 08:19:04 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 #define BUFF_SIZE 4096
 
-static t_vector		g_vec_null = {NULL, 0, 0, sizeof(struct s_map *)};
+static t_vector		g_vec_null = {NULL, 0, 0, sizeof(struct s_room *)};
 static t_vector		*g_vec = &g_vec_null;
 
 static bool				add_room(t_lemin *lemin, const char *line,
@@ -47,22 +47,25 @@ static bool				add_room(t_lemin *lemin, const char *line,
 
 static t_flag			get_flag(t_lemin *lemin, char *line)
 {
-	copy_line(lemin, line);
+	t_flag		flag;
+
+	flag = E_VOID;
 	if (ft_strequ(line, "##start"))
 	{
 		if (_START != UINT32_MAX)
 			errhdl(lemin, NULL, line, E_MULTISTART);
 		_START = _NB;
-		GIMME(E_START);
+		flag = E_START;
 	}
 	else if (ft_strequ(line, "##end"))
 	{
 		if (_END != UINT32_MAX)
 			errhdl(lemin, NULL, line, E_MULTIEND);
 		_END = _NB;
-		GIMME(E_END);
+		flag = E_END;
 	}
-	GIMME(E_VOID);
+	copy_line(lemin, line);
+	GIMME(flag);
 }
 
 static int				map_link(t_lemin *lemin, const char *line)
@@ -118,16 +121,17 @@ void					parse(t_lemin *lemin, bool links, t_flag flag)
 {
 	char		*line;
 
-	get_next_line(STDIN_FILENO, &line);
-	while (line[++lemin->debug_len])
-		if (!ft_isdigit(line[lemin->debug_len]))
-			errhdl(lemin, NULL, line, E_FIRSTLINE);
-	if (ft_strlen(line) > 10 || (_ANTS = ft_atoi(line)) < 1)
-		errhdl(lemin, NULL, line, E_FIRSTLINE);
-	copy_line(lemin, line);
 	while (get_next_line(STDIN_FILENO, &line))
 	{
-		if (!links && line[0] == '#' && (flag = get_flag(lemin, line)))
+		if (!_ANTS && line[0] != '#')
+		{
+			while (line[++lemin->debug_len])
+				if (!ft_isdigit(line[lemin->debug_len]))
+					errhdl(lemin, NULL, line, E_FIRSTLINE);
+			if (ft_strlen(line) > 10 || (_ANTS = ft_atoi(line)) < 1)
+				errhdl(lemin, NULL, line, E_FIRSTLINE);
+		}
+		else if (!links && line[0] == '#' && (flag = get_flag(lemin, line)))
 			MOAR;
 		else if (line[0] == 'L' && !finish_read(lemin, line))
 			NOMOAR;
@@ -139,6 +143,5 @@ void					parse(t_lemin *lemin, bool links, t_flag flag)
 	}
 	if (!lemin->links)
 		errhdl(lemin, NULL, line, E_NOLINKS);
-	if (line)
-		ft_strdel(&line);
+	line ? ft_strdel(&line) : 0;
 }

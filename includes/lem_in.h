@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/15 09:04:28 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/18 11:34:50 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../libft/includes/libft.h"
 
 # define _ANTS lemin->ants
+# define _CHECK lemin->check
 # define _DEBUG lemin->debug
 # define _END lemin->end
 # define _LINKS lemin->links
@@ -55,6 +56,7 @@ typedef enum		s_flag
 typedef struct		s_lemin
 {
 	bool			debug;
+	bool			*check;
 	bool			**matrix;
 	char			*file;
 	int				ants;
@@ -67,14 +69,6 @@ typedef struct		s_lemin
 	uint32_t		start;
 	uintmax_t		links;
 }					t_lemin;
-
-typedef struct		s_dfs
-{
-	bool			*check;
-	const t_lemin	*lemin;
-	t_list			**alst;
-	uintmax_t		limit;
-}					t_dfs;
 
 struct				s_room
 {
@@ -91,16 +85,16 @@ struct				s_path
 	uint16_t		len;
 };
 
+extern void			edkarp(t_lemin *lemin);
 extern void			copy_line(t_lemin *lemin, char *line);
-void				debug_output(const t_list *list, const t_lemin *lemin);
-int					dfs_init(t_list **alst, const t_lemin *lemin, bool *check);
-void				errhdl(const t_lemin *lemin, const struct s_room *room,
+extern void			debug_output(const t_lemin *lemin);
+extern void			errhdl(const t_lemin *lemin, const struct s_room *room,
 					const char *line, t_error err);
 extern int			finish_read(t_lemin *lemin, char *line);
-void				move(const t_lemin *lemin, bool *check);
+extern void			move(const t_lemin *lemin);
 extern void			parse(t_lemin *lemin, bool links, t_flag flag);
-bool				usage(int argc, const char *argv[]);
-void				verif_entry(const t_lemin *lemin, const struct s_room *room,
+extern bool			usage(int argc, const char *argv[]);
+extern void			verif_entry(const t_lemin *lemin, const struct s_room *room,
 					const char *line);
 
 #endif

@@ -6,29 +6,28 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 20:51:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/15 09:17:21 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/18 15:17:10 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 #define _TARGET _PATH[k]->rooms[p + 1]
 
-static bool			check_ant(const t_lemin *lemin, uint16_t *colony,
-					bool *check, int x)
+static bool			check_ant(const t_lemin *lemin, uint16_t *colony, int x)
 {
 	uint16_t		k;
 	uint16_t		p;
 
-	k = UINT16_MAX;
-	while (_PATH[++k] && (p = UINT16_MAX))
+	k = -1;
+	while (_PATH[++k] && (p = -1))
 		while (++p < _PATH[k]->len)
 			if (colony[x] == _PATH[k]->rooms[p])
 			{
-				if (_TARGET != _END && check[_TARGET])
+				if (_TARGET != _END && _CHECK[_TARGET])
 					MOAR;
-				check[colony[x]] = false;
+				_CHECK[colony[x]] = false;
 				colony[x] = _TARGET;
-				check[colony[x]] = true;
+				_CHECK[colony[x]] = true;
 				ft_printf("L%d-%s ", x + 1, _ROOM[_TARGET]->name);
 				if (colony[x] == _END)
 					GIMME(true);
@@ -38,7 +37,7 @@ static bool			check_ant(const t_lemin *lemin, uint16_t *colony,
 	KTHXBYE;
 }
 
-void				move(const t_lemin *lemin, bool *check)
+void				move(const t_lemin *lemin)
 {
 	int				ants;
 	int				k;
@@ -46,11 +45,11 @@ void				move(const t_lemin *lemin, bool *check)
 
 	ants = lemin->ants;
 	ft_memset(colony, _START, ants * sizeof(uint16_t));
-	while (ants)
+	ft_memset(_CHECK, false, _NB);
+	while (ants && (k = -1))
 	{
-		k = -1;
 		while (++k < lemin->ants)
-			if (colony[k] != _END && check_ant(lemin, colony, check, k) == true)
+			if (colony[k] != _END && check_ant(lemin, colony, k) == true)
 				--ants;
 		write(STDOUT_FILENO, "\n", 1);
 	}

@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 22:12:52 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/11 20:44:55 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/16 09:33:45 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,28 +73,7 @@ static void			display_rooms(const t_lemin *lemin, const size_t len)
 	}
 }
 
-static void			display_paths(const t_list *list, const t_lemin *lemin)
-{
-	uint16_t		k;
-
-	ft_printf("\n\n{1c}%s{eoc}\n", g_debug[5]);
-	ft_printf("There are {1c}%lu{eoc} possible paths:\n\n", ft_lstsize(list));
-	while (list)
-	{
-		k = UINT16_MAX;
-		while (++k < _LIST->len)
-		{
-			ft_printf("%s ", _ROOM[_LIST->rooms[k]]->name);
-			if (k < _LIST->len - 1)
-				ft_printf("{1a}->{eoc} ");
-			else
-				write(STDOUT_FILENO, "\n", 1);
-		}
-		list = list->next;
-	}
-}
-
-void				debug_output(const t_list *list, const t_lemin *lemin)
+void				debug_output(const t_lemin *lemin)
 {
 	uintmax_t		k;
 	uint16_t		p;
@@ -102,12 +81,11 @@ void				debug_output(const t_list *list, const t_lemin *lemin)
 	ft_printf("{c}%s{eoc}\n", g_debug[0]);
 	display_rooms(lemin, ft_intlen(_NB));
 	display_matrix(lemin, ft_intlen(_NB) + 3, -1, -1);
-	display_paths(list, lemin);
-	ft_printf("\n{1c}%s{eoc}\n", g_debug[6]);
-	k = UINTMAX_MAX;
+	ft_printf("\n\n{1c}%s{eoc}\n", g_debug[6]);
+	k = -1;
 	while (_PATH[++k])
 	{
-		p = UINT16_MAX;
+		p = -1;
 		while (++p < _PATH[k]->len)
 		{
 			ft_printf("%s ", _ROOM[_PATH[k]->rooms[p]]->name);

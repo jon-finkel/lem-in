@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 10:50:56 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/14 07:41:11 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/16 08:23:40 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void			verif_entry(const t_lemin *lemin, const struct s_room *room,
 {
 	uint16_t		k;
 
-	k = UINT16_MAX;
+	k = -1;
 	while (++k < _NB)
 	{
 		if (ft_strequ(_ROOM[k]->name, room->name))
