@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 20:51:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/18 15:17:10 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/19 15:19:47 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ static bool			check_ant(const t_lemin *lemin, uint16_t *colony, int x)
 				if (colony[x] == _END)
 					GIMME(true);
 				else
-					KTHXBYE;
+					GIMME(false);
 			}
-	KTHXBYE;
+	GIMME(false);
 }
 
 void				move(const t_lemin *lemin)
@@ -46,8 +46,9 @@ void				move(const t_lemin *lemin)
 	ants = lemin->ants;
 	ft_memset(colony, _START, ants * sizeof(uint16_t));
 	ft_memset(_CHECK, false, _NB);
-	while (ants && (k = -1))
+	while (ants)
 	{
+		k = -1;
 		while (++k < lemin->ants)
 			if (colony[k] != _END && check_ant(lemin, colony, k) == true)
 				--ants;

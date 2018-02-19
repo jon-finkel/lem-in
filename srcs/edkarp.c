@@ -6,31 +6,25 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 08:14:23 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/18 15:32:08 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/19 15:58:19 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
-#define _PATH_HEAD ((struct s_path *)(deque->head->data))
-#define _PATH_TAIL ((struct s_path *)(deque->tail->data))
-#define _POS _PATH_HEAD->rooms[_PATH_HEAD->len - 1]
+#define _HEAD ((struct s_path *)(deque->head->data))
+#define _TAIL ((struct s_path *)(deque->tail->data))
+#define _POS _HEAD->rooms[_HEAD->len - 1]
 
 static t_vector		g_vec_null = {NULL, 0, 0, sizeof(struct s_path *)};
 static t_vector		*g_vec = &g_vec_null;
-
-static void						dqtor(void *data, size_t data_size)
-{
-	ft_memset(data, '\0', data_size);
-	free(data);
-}
 
 static struct s_path			*clear_deque(t_deque *deque)
 {
 	struct s_path		*path;
 
 	path = (struct s_path *)ft_memalloc(sizeof(struct s_path));
-	ft_memmove(path, _PATH_TAIL, sizeof(*_PATH_TAIL));
-	ft_deqdel(&deque, (t_dqtor)&dqtor);
+	ft_memmove(path, _TAIL, sizeof(*_TAIL));
+	ft_deqdel(&deque, (t_dqtor)dqtor);
 	GIMME(path);
 }
 
@@ -51,13 +45,13 @@ static struct s_path			*bfs(const t_lemin *lemin, const uint16_t start)
 		while (++k < _NB)
 			if (_MATRIX[_POS][k] && _CHECK[k] == false)
 			{
-				ft_deqappend(deque, ft_dlstnew(_PATH_HEAD, sizeof(*_PATH_HEAD)));
-				_PATH_TAIL->rooms[_PATH_TAIL->len++] = k;
+				ft_deqappend(deque, ft_dlstnew(_HEAD, sizeof(*_HEAD)));
+				_TAIL->rooms[_TAIL->len++] = k;
 				_CHECK[k] = true;
 				if (k == _END)
 					GIMME(clear_deque(deque));
 			}
-		ft_deqpop(deque, (t_dqtor)&dqtor);
+		ft_deqpop(deque, (t_dqtor)dqtor);
 	}
 	ft_memdel((void **)&deque);
 	ZOMG;

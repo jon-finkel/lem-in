@@ -6,28 +6,28 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 11:10:01 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/15 16:07:29 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/19 15:36:13 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
-#include <string.h>
-#include <errno.h>
 #define _LINE lemin->debug_line
 
 static const char		*g_err[ERRNUM] =
 {
-	"The map doesn't have any links",
-	"The map has multiple starting points",
-	"The map has multiple ending points",
-	"The map doesn't have a starting point",
-	"The map doesn't have an ending point",
-	"Two rooms have the same coordinates",
-	"Two rooms have the same name",
-	"This map has no solution",
-	"Room definition is invalid (no Y axis)",
-	"Room definition is invalid (no coordinates)",
-	"Room definition is invalid (too many coordinates)",
+	"This map doesn't have any room.",
+	"This map doesn't have any link.",
+	"This map has multiple starting points.",
+	"This map has multiple ending points.",
+	"This map doesn't have a starting point.",
+	"This map doesn't have an ending point.",
+	"Two rooms have the same coordinates.",
+	"Two rooms have the same name.",
+	"This map has no solution.",
+	"Room has invalid coordinates.",
+	"Room definition is invalid (no Y axis).",
+	"Room definition is invalid (no coordinates).",
+	"Room definition is invalid (too many coordinates).",
 	"First line should be a valid number of ants.",
 	"Number of ants is invalid."
 };

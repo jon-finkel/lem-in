@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/18 08:19:04 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/19 15:33:38 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,14 @@ static bool				add_room(t_lemin *lemin, const char *line,
 {
 	struct s_room		*room;
 
-	if (ft_strchr(line, '-') || !(_NB + 1))
+	if (verif_link(lemin, line) == true || !(_NB + 1))
 		GIMME(true);
 	room = (struct s_room *)ft_wralloc(sizeof(struct s_room));
 	lemin->debug_len = 0;
 	while (line[lemin->debug_len] && line[lemin->debug_len] != ' ')
 		++lemin->debug_len;
 	room->name = ft_strndup(line, lemin->debug_len);
+	verif_entry(lemin, room, line, E_LETTERS);
 	if (!line[(lemin->debug_len += 1)] || !ft_isdigit(line[lemin->debug_len]))
 		errhdl(lemin, NULL, line, E_ROOMNOXY);
 	room->x = ft_atoi(&line[lemin->debug_len]);
@@ -38,11 +39,11 @@ static bool				add_room(t_lemin *lemin, const char *line,
 	if (line[lemin->debug_len + ft_intlen(room->y)])
 		errhdl(lemin, NULL, line, E_ROOMZ);
 	room->flag = flag;
-	verif_entry(lemin, room, line);
+	verif_entry(lemin, room, line, E_DUP);
 	room->nb = _NB++;
 	*(struct s_room **)ft_vecpush(g_vec) = room;
 	_ROOM = g_vec->buff;
-	KTHXBYE;
+	GIMME(false);
 }
 
 static t_flag			get_flag(t_lemin *lemin, char *line)
@@ -101,6 +102,8 @@ static int				do_matrix(t_lemin *lemin, const char *line)
 
 	if (line[0] == '#')
 		KTHXBYE;
+	if (!_NB)
+		errhdl(lemin, NULL, NULL, E_NOROOMS);
 	if (!_MATRIX)
 	{
 		_MATRIX = (bool **)ft_memalloc(sizeof(bool *) * _NB);

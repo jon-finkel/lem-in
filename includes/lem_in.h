@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/18 11:34:50 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/19 15:39:07 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@
 
 typedef enum		s_error
 {
-	E_NOLINKS = 0,
+	E_NOROOMS = 0,
+	E_NOLINKS = E_NOROOMS + 1,
 	E_MULTISTART = E_NOLINKS + 1,
 	E_MULTIEND = E_MULTISTART + 1,
 	E_NOSTART = E_MULTIEND + 1,
@@ -37,7 +38,8 @@ typedef enum		s_error
 	E_SAMEXY = E_NOEND + 1,
 	E_SAMENAME = E_SAMEXY + 1,
 	E_NOSOLUTION = E_SAMENAME + 1,
-	E_ROOMNOY = E_NOSOLUTION + 1,
+	E_BADCOORD = E_NOSOLUTION + 1,
+	E_ROOMNOY = E_BADCOORD + 1,
 	E_ROOMNOXY = E_ROOMNOY + 1,
 	E_ROOMZ = E_ROOMNOXY + 1,
 	E_FIRSTLINE = E_ROOMZ + 1,
@@ -50,7 +52,9 @@ typedef enum		s_flag
 {
 	E_VOID = 1,
 	E_START = 21,
-	E_END = 42
+	E_END = 42,
+	E_DUP,
+	E_LETTERS
 }					t_flag;
 
 typedef struct		s_lemin
@@ -85,6 +89,7 @@ struct				s_path
 	uint16_t		len;
 };
 
+extern void			dqtor(void *data, size_t data_size);
 extern void			edkarp(t_lemin *lemin);
 extern void			copy_line(t_lemin *lemin, char *line);
 extern void			debug_output(const t_lemin *lemin);
@@ -93,8 +98,8 @@ extern void			errhdl(const t_lemin *lemin, const struct s_room *room,
 extern int			finish_read(t_lemin *lemin, char *line);
 extern void			move(const t_lemin *lemin);
 extern void			parse(t_lemin *lemin, bool links, t_flag flag);
-extern bool			usage(int argc, const char *argv[]);
 extern void			verif_entry(const t_lemin *lemin, const struct s_room *room,
-					const char *line);
+					const char *line, t_flag flag);
+extern bool			verif_link(const t_lemin *lemin, const char *line);
 
 #endif
