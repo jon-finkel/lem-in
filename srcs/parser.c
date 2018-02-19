@@ -6,32 +6,29 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/19 20:54:16 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/19 21:34:19 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 #define BUFF_SIZE 4096
 
-static t_flag			gfl(t_lemin *lemin, char *line)
+static int				get_flag(t_lemin *lemin, char *line, t_flag *flag)
 {
-	t_flag		flag;
-
-	flag = E_VOID;
 	if (ft_strequ(line, "##start"))
 	{
 		if (_START != UINT32_MAX)
 			errhdl(lemin, NULL, line, E_MULTISTART);
-		flag = E_START;
+		*flag = E_START;
 	}
 	else if (ft_strequ(line, "##end"))
 	{
 		if (_END != UINT32_MAX)
 			errhdl(lemin, NULL, line, E_MULTIEND);
-		flag = E_END;
+		*flag = E_END;
 	}
 	copy_line(lemin, line);
-	GIMME(flag);
+	KTHXBYE;
 }
 
 static int				map_link(t_lemin *lemin, const char *line)
@@ -99,7 +96,7 @@ void					parse(t_lemin *lemin, bool links, t_flag flag)
 			if (ft_strlen(line) > 10 || (_ANTS = ft_atoi(line)) < 1)
 				errhdl(lemin, NULL, line, E_FIRSTLINE);
 		}
-		else if (_ANTS && !links && line[0] == '#' && (flag = gfl(lemin, line)))
+		else if (!links && line[0] == '#' && !get_flag(lemin, line, &flag))
 			MOAR;
 		else if (line[0] == 'L')
 			errhdl(lemin, NULL, line, E_BADNAME);
