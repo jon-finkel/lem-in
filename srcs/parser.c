@@ -6,47 +6,14 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/19 15:33:38 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/19 20:54:16 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 #define BUFF_SIZE 4096
 
-static t_vector		g_vec_null = {NULL, 0, 0, sizeof(struct s_room *)};
-static t_vector		*g_vec = &g_vec_null;
-
-static bool				add_room(t_lemin *lemin, const char *line,
-						const t_flag flag)
-{
-	struct s_room		*room;
-
-	if (verif_link(lemin, line) == true || !(_NB + 1))
-		GIMME(true);
-	room = (struct s_room *)ft_wralloc(sizeof(struct s_room));
-	lemin->debug_len = 0;
-	while (line[lemin->debug_len] && line[lemin->debug_len] != ' ')
-		++lemin->debug_len;
-	room->name = ft_strndup(line, lemin->debug_len);
-	verif_entry(lemin, room, line, E_LETTERS);
-	if (!line[(lemin->debug_len += 1)] || !ft_isdigit(line[lemin->debug_len]))
-		errhdl(lemin, NULL, line, E_ROOMNOXY);
-	room->x = ft_atoi(&line[lemin->debug_len]);
-	if (!line[(lemin->debug_len += ft_intlen(room->x) + 1)]
-		|| !ft_isdigit(line[lemin->debug_len]))
-		errhdl(lemin, NULL, line, E_ROOMNOY);
-	room->y = ft_atoi(&line[lemin->debug_len]);
-	if (line[lemin->debug_len + ft_intlen(room->y)])
-		errhdl(lemin, NULL, line, E_ROOMZ);
-	room->flag = flag;
-	verif_entry(lemin, room, line, E_DUP);
-	room->nb = _NB++;
-	*(struct s_room **)ft_vecpush(g_vec) = room;
-	_ROOM = g_vec->buff;
-	GIMME(false);
-}
-
-static t_flag			get_flag(t_lemin *lemin, char *line)
+static t_flag			gfl(t_lemin *lemin, char *line)
 {
 	t_flag		flag;
 
@@ -55,14 +22,12 @@ static t_flag			get_flag(t_lemin *lemin, char *line)
 	{
 		if (_START != UINT32_MAX)
 			errhdl(lemin, NULL, line, E_MULTISTART);
-		_START = _NB;
 		flag = E_START;
 	}
 	else if (ft_strequ(line, "##end"))
 	{
 		if (_END != UINT32_MAX)
 			errhdl(lemin, NULL, line, E_MULTIEND);
-		_END = _NB;
 		flag = E_END;
 	}
 	copy_line(lemin, line);
@@ -134,14 +99,13 @@ void					parse(t_lemin *lemin, bool links, t_flag flag)
 			if (ft_strlen(line) > 10 || (_ANTS = ft_atoi(line)) < 1)
 				errhdl(lemin, NULL, line, E_FIRSTLINE);
 		}
-		else if (!links && line[0] == '#' && (flag = get_flag(lemin, line)))
+		else if (_ANTS && !links && line[0] == '#' && (flag = gfl(lemin, line)))
 			MOAR;
-		else if (line[0] == 'L' && !finish_read(lemin, line))
-			NOMOAR;
-		else if ((!links && (links = add_room(lemin, line, flag))) || links)
-			if (do_matrix(lemin, line) == -1 && !finish_read(lemin, line))
-				NOMOAR;
-		flag = E_VOID;
+		else if (line[0] == 'L')
+			errhdl(lemin, NULL, line, E_BADNAME);
+		else if ((!links && (links = add_room(lemin, line, &flag))) || links)
+			if (do_matrix(lemin, line) == -1)
+				finish_read(lemin, line);
 		copy_line(lemin, line);
 	}
 	if (!lemin->links)

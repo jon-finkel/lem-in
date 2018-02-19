@@ -6,7 +6,7 @@
 #    By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/06 20:54:44 by nfinkel           #+#    #+#              #
-#    Updated: 2018/02/16 20:47:26 by nfinkel          ###   ########.fr        #
+#    Updated: 2018/02/19 20:50:51 by nfinkel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ OBJDIR :=					./build/
 SRCS_DIR :=					./srcs/
 
 #	Sources
-SRC +=						main.c edkarp.c move.c parser.c
+SRC +=						main.c edkarp.c move.c parser.c parser2.c
 SRC +=						debug.c errhdl.c misc.c
 
 OBJECTS =					$(patsubst %.c,$(OBJDIR)%.o,$(SRCS))
@@ -64,7 +64,7 @@ $(OBJDIR):
 	@mkdir -p $@
 
 $(OBJDIR)%.o: %.c
-	@printf  "\033[1:92mCompiling $(NAME)\033[0m %-21s\033[32m[$<]\033[0m\n" ""
+	@printf  "\033[1:92mCompiling $(NAME)\033[0m %-29s\033[32m[$<]\033[0m\n" ""
 	@$(CC) $(VERSION) $(DEBUG)$(FLAGS)$(O_FLAG) $(HEADERS) -c $< -o $@
 	@printf "\033[A\033[2K"
 

@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 11:10:01 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/19 15:36:13 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/19 20:40:58 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static const char		*g_err[ERRNUM] =
 	"Two rooms have the same coordinates.",
 	"Two rooms have the same name.",
 	"This map has no solution.",
-	"Room has invalid coordinates.",
+	"Room format is invalid.",
+	"Name of the room is invalid.",
 	"Room definition is invalid (no Y axis).",
 	"Room definition is invalid (no coordinates).",
 	"Room definition is invalid (too many coordinates).",
@@ -42,6 +43,8 @@ _Noreturn void			ft_errhdl(int errcode)
 _Noreturn void			errhdl(const t_lemin *lemin, const struct s_room *room,
 						const char *line, t_error err)
 {
+	uint16_t		k;
+
 	if (err == E_FIRSTLINE && (line[0] == '0' || _ANTS < 0))
 		err = E_NOANTS;
 	if (_DEBUG)
@@ -50,8 +53,13 @@ _Noreturn void			errhdl(const t_lemin *lemin, const struct s_room *room,
 		if (err >= E_SAMEXY && err != E_NOSOLUTION)
 			ft_dprintf(STDERR_FILENO, "LINE[%lu]: %s\n", _LINE, line);
 		if (err == E_SAMEXY || err == E_SAMENAME)
-			ft_dprintf(STDERR_FILENO, "%s %d %d\n", room->name, room->x,\
-				room->y);
+		{
+			k = -1;
+			while (++k < _NB)
+				if (ft_strequ(room->name, _ROOM[k]->name))
+			ft_dprintf(STDERR_FILENO, "ROOM[%lu]: %s %d %d\n", k, room->name,\
+				room->x, room->y);
+		}
 	}
 	else
 		ft_dprintf(STDERR_FILENO, "ERROR\n");

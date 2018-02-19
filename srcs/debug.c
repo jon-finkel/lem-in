@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 22:12:52 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/16 09:33:45 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/19 20:57:29 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static const char		*g_debug[8] =
 	"- Adjacency matrix:\n",
 	"0 1 2 3 4 5 6 7 8 9 ",
 	"- Possible paths:\n",
-	"- Chosen paths:\n",
+	"- Chosen path(s):\n",
 	"---------- END OF DEBUG MODE -----------\n"
 };
 
@@ -65,9 +65,9 @@ static void			display_rooms(const t_lemin *lemin, const size_t len)
 	while (++k < _NB)
 	{
 		if (_ROOM[k]->flag == E_START)
-			ft_printf("{4c}%.*hu{eoc} : {4c}%s{eoc}\n", len, k, _ROOM[k]->name);
+			ft_printf("{4c}%.*hu{eoc} : {4c}%r{eoc}\n", len, k, _ROOM[k]->name);
 		else if (_ROOM[k]->flag == E_END)
-			ft_printf("{4C}%.*hu{eoc} : {4C}%s{eoc}\n", len, k, _ROOM[k]->name);
+			ft_printf("{4C}%.*hu{eoc} : {4C}%r{eoc}\n", len, k, _ROOM[k]->name);
 		else
 			ft_printf("%.*hu : %s\n", len, k, _ROOM[k]->name);
 	}
@@ -78,7 +78,7 @@ void				debug_output(const t_lemin *lemin)
 	uintmax_t		k;
 	uint16_t		p;
 
-	ft_printf("{c}%s{eoc}\n", g_debug[0]);
+	ft_printf("\n{c}%s{eoc}\n", g_debug[0]);
 	display_rooms(lemin, ft_intlen(_NB));
 	display_matrix(lemin, ft_intlen(_NB) + 3, -1, -1);
 	ft_printf("\n\n{1c}%s{eoc}\n", g_debug[6]);
@@ -88,7 +88,7 @@ void				debug_output(const t_lemin *lemin)
 		p = -1;
 		while (++p < _PATH[k]->len)
 		{
-			ft_printf("%s ", _ROOM[_PATH[k]->rooms[p]]->name);
+			ft_printf("%r ", _ROOM[_PATH[k]->rooms[p]]->name);
 			if (p < _PATH[k]->len - 1)
 				ft_printf("{1a}->{eoc} ");
 			else
