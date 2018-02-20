@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/19 20:54:08 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/20 09:50:57 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define _CHECK lemin->check
 # define _DEBUG lemin->debug
 # define _END lemin->end
+# define _FILE lemin->file
 # define _LINKS lemin->links
 # define _LIST ((struct s_path *)(list->data))
 # define _MATRIX lemin->matrix
@@ -54,8 +55,8 @@ typedef enum		s_flag
 	E_VOID = 1,
 	E_START = 21,
 	E_END = 42,
-	E_DUP,
-	E_LETTERS
+	E_FILE,
+	E_MATRIX
 }					t_flag;
 
 typedef struct		s_lemin
@@ -91,7 +92,6 @@ struct				s_path
 };
 
 extern bool			add_room(t_lemin *lemin, const char *line, t_flag *flag);
-extern void			dqtor(void *data, size_t data_size);
 extern void			edkarp(t_lemin *lemin);
 extern void			copy_line(t_lemin *lemin, char *line);
 extern void			debug_output(const t_lemin *lemin);
@@ -100,5 +100,8 @@ extern void			errhdl(const t_lemin *lemin, const struct s_room *room,
 extern int			finish_read(t_lemin *lemin, char *line);
 extern void			move(const t_lemin *lemin);
 extern void			parse(t_lemin *lemin, bool links, t_flag flag);
+
+extern void			dqtor(void *data, size_t data_size, va_list ap);
+extern void			vdtor(void *data, va_list ap);
 
 #endif

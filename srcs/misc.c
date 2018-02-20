@@ -6,30 +6,46 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 10:50:56 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/19 20:53:05 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/20 10:05:32 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-static t_vector		g_vec_null = {NULL, 0, 0, sizeof(struct s_path *)};
-static t_vector		*g_vec = &g_vec_null;
+t_vector		g_file_null = {NULL, 0, 0, sizeof(struct s_path *)};
+t_vector		*g_file = &g_file_null;
 
-void			dqtor(void *data, size_t data_size)
+_Noreturn void			ft_errhdl(void **aptr, size_t size, int errcode)
 {
+	(void)aptr;
+	(void)size;
+	if (errcode == ENOMEM)
+		ft_putendl_fd("Cannot allocate memory", STDERR_FILENO);
+	exit(EXIT_FAILURE);
+}
+
+void					dqtor(void *data, size_t data_size, va_list ap)
+{
+	(void)ap;
 	ft_memset(data, '\0', data_size);
 	free(data);
 }
 
-void			copy_line(t_lemin *lemin, char *line)
+void					vdtor(void *data, va_list ap)
 {
-	*(char **)ft_vecpush(g_vec) = ft_strdup(line);
-	lemin->file = g_vec->buff;
+	(void)ap;
+	free(*(char **)data);
+}
+
+void					copy_line(t_lemin *lemin, char *line)
+{
+	*(char **)ft_vecpush(g_file) = ft_strdup(line);
+	_FILE = g_file->buff;
 	++lemin->debug_line;
 	ft_strdel(&line);
 }
 
-int				finish_read(t_lemin *lemin, char *line)
+int						finish_read(t_lemin *lemin, char *line)
 {
 	copy_line(lemin, line);
 	while (get_next_line(STDIN_FILENO, &line))

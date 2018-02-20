@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/19 20:49:17 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/20 10:05:52 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,21 @@ static bool			usage(int argc, const char *argv[])
 
 static void			print_debug_and_clean(t_lemin *lemin)
 {
-	uint16_t		k;
+	extern t_vector		*g_file;
+	uint16_t			k;
 
 	k = -1;
-	while (lemin->file[++k])
-		ft_printf("%r\n", lemin->file[k]);
+	while (_FILE[++k])
+		ft_printf("%r\n", _FILE[k]);
 	if (_DEBUG)
 		debug_output(lemin);
+	k = -1;
+	while (++k < _NB)
+		free(_MATRIX[k]);
+	ft_memdel((void **)&_MATRIX);
+	ft_vecclear(g_file, vdtor);
+	g_file = NULL;
+	_FILE = NULL;
 }
 
 int					main(int argc, const char *argv[])

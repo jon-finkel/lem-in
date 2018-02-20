@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 11:10:01 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/19 20:40:58 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/20 08:11:21 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,6 @@ static const char		*g_err[ERRNUM] =
 	"First line should be a valid number of ants.",
 	"Number of ants is invalid."
 };
-
-_Noreturn void			ft_errhdl(int errcode)
-{
-	if (errcode == ENOMEM)
-		ft_putendl_fd("Cannot allocate memory", STDERR_FILENO);
-	exit(EXIT_FAILURE);
-}
 
 _Noreturn void			errhdl(const t_lemin *lemin, const struct s_room *room,
 						const char *line, t_error err)
