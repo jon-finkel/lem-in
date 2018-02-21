@@ -6,20 +6,24 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 20:51:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/19 18:45:54 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/20 22:10:38 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 #define _TARGET _PATH[k]->rooms[p + 1]
 
-static bool			check_ant(const t_lemin *lemin, uint16_t *colony, int x)
+static bool			check_ant(const t_lemin *lemin, uint16_t *colony, int ants,
+					const int x)
 {
 	uint16_t		k;
 	uint16_t		p;
 
 	k = -1;
 	while (_PATH[++k] && (p = -1))
+	{
+		if (k > 0 && colony[x] == _START && ants < _PATH[k]->len - 2)
+			NOMOAR;
 		while (++p < _PATH[k]->len)
 			if (colony[x] == _PATH[k]->rooms[p])
 			{
@@ -34,26 +38,34 @@ static bool			check_ant(const t_lemin *lemin, uint16_t *colony, int x)
 				else
 					GIMME(false);
 			}
+	}
 	GIMME(false);
 }
 
-void				move(const t_lemin *lemin)
+void				move(const t_lemin *lemin, int ants)
 {
-	int				ants;
 	int				k;
+	int				p;
+	int				nb;
 	uint16_t		colony[lemin->ants];
 
-	ants = lemin->ants;
 	k = -1;
 	while (++k < ants)
 		colony[k] = _START;
 	ft_memset(_CHECK, false, _NB);
-	while (ants)
+	write(STDOUT_FILENO, "\n", 1);
+	while (ants && (k = -1))
 	{
-		k = -1;
 		while (++k < lemin->ants)
-			if (colony[k] != _END && check_ant(lemin, colony, k) == true)
-				--ants;
+			if (colony[k] != _END && (p = -1))
+			{
+				nb = 0;
+				while (++p < lemin->ants)
+					if (colony[p] == _START)
+						++nb;
+				if (check_ant(lemin, colony, nb, k) == true)
+					--ants;
+			}
 		write(STDOUT_FILENO, "\n", 1);
 	}
 }

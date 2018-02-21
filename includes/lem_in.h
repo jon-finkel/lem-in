@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/20 09:50:57 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/20 21:34:41 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct		s_lemin
 	uint32_t		end;
 	uint32_t		start;
 	uintmax_t		links;
+	uintmax_t		moves;
 }					t_lemin;
 
 struct				s_room
@@ -98,7 +99,7 @@ extern void			debug_output(const t_lemin *lemin);
 extern void			errhdl(const t_lemin *lemin, const struct s_room *room,
 					const char *line, t_error err);
 extern int			finish_read(t_lemin *lemin, char *line);
-extern void			move(const t_lemin *lemin);
+extern void			move(const t_lemin *lemin, int ants);
 extern void			parse(t_lemin *lemin, bool links, t_flag flag);
 
 extern void			dqtor(void *data, size_t data_size, va_list ap);

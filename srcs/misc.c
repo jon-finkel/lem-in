@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 10:50:56 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/20 10:05:32 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/20 19:11:53 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ _Noreturn void			ft_errhdl(void **aptr, size_t size, int errcode)
 {
 	(void)aptr;
 	(void)size;
-	if (errcode == ENOMEM)
-		ft_putendl_fd("Cannot allocate memory", STDERR_FILENO);
-	exit(EXIT_FAILURE);
+	(void)errcode;
+	ft_fatal("Cannot allocate memory");
 }
 
 void					dqtor(void *data, size_t data_size, va_list ap)

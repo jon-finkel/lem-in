@@ -1,0 +1,20 @@
+10
+##start
+start 0 0
+##end
+end 10 10
+A0 1 1
+A1 2 2
+B1 3 3
+B2 4 4
+C1 5 5
+C2 6 6
+start-A0
+A1-end
+start-B1
+B1-B2
+B2-A1
+A0-C1
+C1-C2
+C2-end
+A0-A1

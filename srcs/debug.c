@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 22:12:52 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/19 20:57:29 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/20 19:31:15 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,5 @@ void				debug_output(const t_lemin *lemin)
 				write(STDOUT_FILENO, "\n", 1);
 		}
 	}
-	ft_printf("\n{c}%s{eoc}\n", g_debug[7]);
+	ft_printf("\n{c}%s{eoc}", g_debug[7]);
 }
