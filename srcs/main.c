@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/20 21:34:50 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/21 19:49:30 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int					main(int argc, const char *argv[])
 		errhdl(lemin, NULL, NULL, _END == UINT32_MAX ? E_NOEND : E_NOSTART);
 	_CHECK = (bool *)ft_memalloc(sizeof(bool) * _NB);
 	_CHECK[_START] = true;
-	edkarp(lemin);
+	edmonds_karp(lemin);
 	print_debug_and_clean(lemin);
 	move(lemin, _ANTS);
 	KTHXBYE;

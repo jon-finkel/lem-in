@@ -6,14 +6,14 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 20:51:17 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/20 10:02:48 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/21 18:43:40 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 #define _LEN lemin->debug_len
 
-static t_vector		g_vec_null = {NULL, 0, 0, sizeof(struct s_path *)};
+static t_vector		g_vec_null = {NULL, 0, 0, sizeof(struct s_room *)};
 static t_vector		*g_vec = &g_vec_null;
 
 static void			check_coord(const t_lemin *lemin, const char *line)
@@ -23,7 +23,7 @@ static void			check_coord(const t_lemin *lemin, const char *line)
 	len = _LEN;
 	while (line[++len])
 		if (!ft_isdigit(line[len]) && line[len] != ' ')
-			errhdl(lemin, NULL, line, E_BADCOORD);
+			errhdl(lemin, NULL, line, E_ROOMINVALID);
 }
 
 static void			check_dup(const t_lemin *lemin, const struct s_room *room,
@@ -60,7 +60,7 @@ static bool			check_link(const t_lemin *lemin, const char *line)
 	if (!space && minus == 1)
 		GIMME(true);
 	if (space && minus)
-		errhdl(lemin, NULL, line, E_BADCOORD);
+		errhdl(lemin, NULL, line, E_ROOMINVALID);
 	GIMME(false);
 }
 
@@ -97,7 +97,7 @@ bool				add_room(t_lemin *lemin, const char *line, t_flag *flag)
 		errhdl(lemin, NULL, line, E_ROOMNOY);
 	room->y = ft_atoi(&line[_LEN]);
 	if (line[_LEN + ft_intlen(room->y)])
-		errhdl(lemin, NULL, line, E_ROOMZ);
+		errhdl(lemin, NULL, line, E_ROOMINVALID);
 	room->flag = *flag;
 	check_dup(lemin, room, line);
 	GIMME(add_vec(lemin, room, flag));

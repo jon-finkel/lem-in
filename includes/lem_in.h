@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/20 21:34:41 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/21 19:57:13 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,16 @@
 # define _DEBUG lemin->debug
 # define _END lemin->end
 # define _FILE lemin->file
+# define _HIT lemin->s_flow.__hit
+# define _HIT_PATH lemin->s_flow.__hit_path
 # define _LINKS lemin->links
-# define _LIST ((struct s_path *)(list->data))
 # define _MATRIX lemin->matrix
+# define _MOVES lemin->moves
 # define _NB lemin->room_nb
 # define _PATH lemin->paths
 # define _ROOM lemin->rooms
 # define _START lemin->start
+# define _VALID_PATHS lemin->valid_paths
 
 typedef enum		s_error
 {
@@ -39,12 +42,11 @@ typedef enum		s_error
 	E_SAMEXY = E_NOEND + 1,
 	E_SAMENAME = E_SAMEXY + 1,
 	E_NOSOLUTION = E_SAMENAME + 1,
-	E_BADCOORD = E_NOSOLUTION + 1,
-	E_BADNAME = E_BADCOORD + 1,
+	E_ROOMINVALID = E_NOSOLUTION + 1,
+	E_BADNAME = E_ROOMINVALID + 1,
 	E_ROOMNOY = E_BADNAME + 1,
 	E_ROOMNOXY = E_ROOMNOY + 1,
-	E_ROOMZ = E_ROOMNOXY + 1,
-	E_FIRSTLINE = E_ROOMZ + 1,
+	E_FIRSTLINE = E_ROOMNOXY + 1,
 	E_NOANTS = E_FIRSTLINE + 1
 }					t_error;
 
@@ -56,7 +58,8 @@ typedef enum		s_flag
 	E_START = 21,
 	E_END = 42,
 	E_FILE,
-	E_MATRIX
+	E_MATRIX,
+	E_REDIRECT
 }					t_flag;
 
 typedef struct		s_lemin
@@ -68,6 +71,11 @@ typedef struct		s_lemin
 	int				ants;
 	size_t			debug_len;
 	size_t			debug_line;
+	struct
+	{
+		bool		__hit;
+		uintmax_t	__hit_path;
+	}				s_flow;
 	struct s_path	**paths;
 	struct s_room	**rooms;
 	uint16_t		room_nb;
@@ -75,7 +83,14 @@ typedef struct		s_lemin
 	uint32_t		start;
 	uintmax_t		links;
 	uintmax_t		moves;
+	uintmax_t		valid_paths;
 }					t_lemin;
+
+typedef struct		s_path
+{
+	uint16_t		rooms[UINT16_MAX];
+	uint16_t		len;
+}					t_path;
 
 struct				s_room
 {
@@ -86,14 +101,8 @@ struct				s_room
 	uint16_t		nb;
 };
 
-struct				s_path
-{
-	uint16_t		rooms[UINT16_MAX];
-	uint16_t		len;
-};
-
 extern bool			add_room(t_lemin *lemin, const char *line, t_flag *flag);
-extern void			edkarp(t_lemin *lemin);
+extern void			edmonds_karp(t_lemin *lemin);
 extern void			copy_line(t_lemin *lemin, char *line);
 extern void			debug_output(const t_lemin *lemin);
 extern void			errhdl(const t_lemin *lemin, const struct s_room *room,

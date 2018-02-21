@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 22:12:52 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/20 19:31:15 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/21 20:04:12 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,25 @@ static const char		*g_debug[8] =
 	"---------- END OF DEBUG MODE -----------\n"
 };
 
-static void			display_matrix(const t_lemin *lemin, size_t len, int k,
-					int p)
+static void			display_matrix(const t_lemin *lemin, size_t len)
 {
 	uint16_t	nb;
+	uint16_t	k;
+	uint16_t	p;
 
 	ft_printf("\n{1c}%s{eoc}\n%*.c", g_debug[3], len, ' ');
 	nb = _NB;
 	while (nb >= 10 && ft_printf("%s", g_debug[4]))
 		nb -= 10;
 	ft_printf("%.*s\n%*c", nb * 2 % 20, g_debug[4], len - 1, ' ');
+	k = -1;
 	while (++k < _NB)
 		ft_printf(" -");
 	k = -1;
 	len -= 3;
-	while (++k < _NB)
+	while (++k < _NB && (p = -1))
 	{
 		ft_printf("\n%0*d |", len, k);
-		p = -1;
 		while (++p < _NB)
 		{
 			if (_MATRIX[k][p])
@@ -80,12 +81,10 @@ void				debug_output(const t_lemin *lemin)
 
 	ft_printf("\n{c}%s{eoc}\n", g_debug[0]);
 	display_rooms(lemin, ft_intlen(_NB));
-	display_matrix(lemin, ft_intlen(_NB) + 3, -1, -1);
+	display_matrix(lemin, ft_intlen(_NB) + 3);
 	ft_printf("\n\n{1c}%s{eoc}\n", g_debug[6]);
 	k = -1;
-	while (_PATH[++k])
-	{
-		p = -1;
+	while (_PATH[++k] && (p = -1))
 		while (++p < _PATH[k]->len)
 		{
 			ft_printf("%r ", _ROOM[_PATH[k]->rooms[p]]->name);
@@ -94,6 +93,5 @@ void				debug_output(const t_lemin *lemin)
 			else
 				write(STDOUT_FILENO, "\n", 1);
 		}
-	}
 	ft_printf("\n{c}%s{eoc}", g_debug[7]);
 }

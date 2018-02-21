@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 11:10:01 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/20 08:11:21 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/21 18:43:09 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static const char		*g_err[ERRNUM] =
 	"Name of the room is invalid.",
 	"Room definition is invalid (no Y axis).",
 	"Room definition is invalid (no coordinates).",
-	"Room definition is invalid (too many coordinates).",
 	"First line should be a valid number of ants.",
 	"Number of ants is invalid."
 };

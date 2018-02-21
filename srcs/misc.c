@@ -6,13 +6,13 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 10:50:56 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/20 19:11:53 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/21 16:42:45 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-t_vector		g_file_null = {NULL, 0, 0, sizeof(struct s_path *)};
+t_vector		g_file_null = {NULL, 0, 0, sizeof(char *)};
 t_vector		*g_file = &g_file_null;
 
 _Noreturn void			ft_errhdl(void **aptr, size_t size, int errcode)

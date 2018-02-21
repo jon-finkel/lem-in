@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 20:51:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/20 22:10:38 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/21 20:44:40 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ static bool			check_ant(const t_lemin *lemin, uint16_t *colony, int ants,
 	uint16_t		k;
 	uint16_t		p;
 
+	(void)ants;
 	k = -1;
 	while (_PATH[++k] && (p = -1))
-	{
-		if (k > 0 && colony[x] == _START && ants < _PATH[k]->len - 2)
-			NOMOAR;
 		while (++p < _PATH[k]->len)
 			if (colony[x] == _PATH[k]->rooms[p])
 			{
@@ -38,7 +36,6 @@ static bool			check_ant(const t_lemin *lemin, uint16_t *colony, int ants,
 				else
 					GIMME(false);
 			}
-	}
 	GIMME(false);
 }
 
