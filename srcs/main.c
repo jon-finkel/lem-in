@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/21 19:49:30 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/22 11:23:22 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,18 @@ static bool			usage(int argc, const char *argv[])
 	GIMME(debug);
 }
 
+static void			sort_vector(t_lemin *lemin)
+{
+	uintmax_t		k;
+	uintmax_t		p;
+
+	k = -1;
+	while (_PATH[++k + 1] && (p = -1))
+		while (_PATH[++p + k + 1])
+			if (_PATH[p]->len > _PATH[p + 1]->len)
+				ft_swap(&_PATH[p], &_PATH[p + 1], sizeof(t_path **));
+}
+
 static void			print_debug_and_clean(t_lemin *lemin)
 {
 	extern t_vector		*g_file;
@@ -82,6 +94,7 @@ static void			print_debug_and_clean(t_lemin *lemin)
 	k = -1;
 	while (_FILE[++k])
 		ft_printf("%r\n", _FILE[k]);
+	sort_vector(lemin);
 	if (_DEBUG)
 		debug_output(lemin);
 	k = -1;

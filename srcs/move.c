@@ -6,22 +6,29 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 20:51:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/21 20:44:40 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/22 11:54:21 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 #define _TARGET _PATH[k]->rooms[p + 1]
 
-static bool			check_ant(const t_lemin *lemin, uint16_t *colony, int ants,
-					const int x)
+static bool			check_opt(const t_lemin *lemin, const int ants, const int k)
+{
+	GIMME(_PATH[k]->len > ants + _PATH[0]->len);
+}
+
+static bool			check_ant(const t_lemin *lemin, uint16_t *colony,
+					const int ants, const int x)
 {
 	uint16_t		k;
 	uint16_t		p;
 
-	(void)ants;
 	k = -1;
 	while (_PATH[++k] && (p = -1))
+	{
+		if (k > 0 && colony[x] == _START && check_opt(lemin, ants, k))
+			NOMOAR;
 		while (++p < _PATH[k]->len)
 			if (colony[x] == _PATH[k]->rooms[p])
 			{
@@ -36,6 +43,7 @@ static bool			check_ant(const t_lemin *lemin, uint16_t *colony, int ants,
 				else
 					GIMME(false);
 			}
+	}
 	GIMME(false);
 }
 
