@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 20:51:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/22 11:54:21 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/22 19:36:11 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static bool			check_opt(const t_lemin *lemin, const int ants, const int k)
 	GIMME(_PATH[k]->len > ants + _PATH[0]->len);
 }
 
-static bool			check_ant(const t_lemin *lemin, uint16_t *colony,
-					const int ants, const int x)
+static bool			check_ant(const t_lemin *lemin, int *ants, uint16_t *colony,
+					const int x)
 {
 	uint16_t		k;
 	uint16_t		p;
@@ -27,13 +27,14 @@ static bool			check_ant(const t_lemin *lemin, uint16_t *colony,
 	k = -1;
 	while (_PATH[++k] && (p = -1))
 	{
-		if (k > 0 && colony[x] == _START && check_opt(lemin, ants, k))
+		if (k > 0 && colony[x] == _START && check_opt(lemin, *ants, k))
 			NOMOAR;
 		while (++p < _PATH[k]->len)
 			if (colony[x] == _PATH[k]->rooms[p])
 			{
 				if (_TARGET != _END && _CHECK[_TARGET])
 					MOAR;
+				colony[x] == _START ? --(*ants) : 0;
 				_CHECK[colony[x]] = false;
 				colony[x] = _TARGET;
 				_CHECK[colony[x]] = true;
@@ -52,25 +53,19 @@ void				move(const t_lemin *lemin, int ants)
 	int				k;
 	int				p;
 	int				nb;
-	uint16_t		colony[lemin->ants];
+	uint16_t		*colony;
 
+	nb = _ANTS;
+	colony = (uint16_t *)ft_wralloc(sizeof(uint16_t) * _ANTS);
 	k = -1;
 	while (++k < ants)
 		colony[k] = _START;
 	ft_memset(_CHECK, false, _NB);
-	write(STDOUT_FILENO, "\n", 1);
-	while (ants && (k = -1))
-	{
+	while (ants && (k = write(STDOUT_FILENO, "\n", 1) - 2))
 		while (++k < lemin->ants)
 			if (colony[k] != _END && (p = -1))
-			{
-				nb = 0;
-				while (++p < lemin->ants)
-					if (colony[p] == _START)
-						++nb;
-				if (check_ant(lemin, colony, nb, k) == true)
+				if (check_ant(lemin, &nb, colony, k) == true)
 					--ants;
-			}
-		write(STDOUT_FILENO, "\n", 1);
-	}
+	write(STDOUT_FILENO, "\n", 1);
+	free(colony);
 }
