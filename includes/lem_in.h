@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/22 11:45:32 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/22 13:33:42 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ struct				s_room
 	uint16_t		nb;
 };
 
-extern bool			add_room(t_lemin *lemin, const char *line, t_flag *flag);
+extern bool			add_room(t_lemin *lemin, const char *line, t_flag *flag,
+					int k);
 extern void			edmonds_karp(t_lemin *lemin);
 extern void			copy_line(t_lemin *lemin, char *line);
 extern void			debug_output(const t_lemin *lemin);
@@ -109,7 +110,7 @@ extern void			errhdl(const t_lemin *lemin, const struct s_room *room,
 					const char *line, t_error err);
 extern int			finish_read(t_lemin *lemin, char *line);
 extern void			move(const t_lemin *lemin, int ants);
-extern void			parse(t_lemin *lemin, bool links, t_flag flag);
+extern void			parse(t_lemin *lemin, bool link, t_flag flag);
 
 extern void			dqtor(void *data, size_t data_size, va_list ap);
 extern void			vdtor(void *data, va_list ap);

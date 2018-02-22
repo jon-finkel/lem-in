@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 08:14:23 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/21 20:31:49 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/22 12:56:23 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static t_path			*clear_deq(t_lemin *lemin, t_deque *deq, t_flag flag)
 	GIMME(path);
 }
 
-static bool				check_hit(t_lemin *lemin, bool *check, const uint16_t x)
+static bool				is_hit(t_lemin *lemin, bool *check, const uint16_t x)
 {
 	bool			stop;
 	uint16_t		p;
@@ -50,7 +50,7 @@ static bool				check_hit(t_lemin *lemin, bool *check, const uint16_t x)
 
 	stop = false;
 	if (check[x] == false)
-		GIMME(true);
+		GIMME(false);
 	else if (x != _START && _CHECK[x] == true)
 	{
 		if (_HIT == false && (k = -1))
@@ -60,7 +60,7 @@ static bool				check_hit(t_lemin *lemin, bool *check, const uint16_t x)
 						_HIT_PATH = k;
 		_HIT = true;
 	}
-	GIMME(false);
+	GIMME(true);
 }
 
 static t_path			*bfs(t_lemin *lemin, bool *check, const uint16_t begin,
@@ -73,13 +73,13 @@ static t_path			*bfs(t_lemin *lemin, bool *check, const uint16_t begin,
 	deq = (t_deque *)ft_memalloc(sizeof(t_deque));
 	path = (t_path *)ft_memalloc(sizeof(t_path));
 	path->rooms[path->len++] = _START;
-	path->rooms[path->len++] = begin;
+	begin != _END ? path->rooms[path->len++] = begin : 0;
 	ft_deqadd(deq, ft_dlstnew(path, sizeof(*path)));
 	free(path);
 	while (deq->head && (k = -1))
 	{
 		while (++k < _NB)
-			if (_MATRIX[_POS][k] && check_hit(lemin, check, k))
+			if ((_MATRIX[_POS][k] && !is_hit(lemin, check, k)) || begin == _END)
 			{
 				ft_deqappend(deq, ft_dlstnew(_HEAD, sizeof(*_HEAD)));
 				_TAIL->rooms[_TAIL->len++] = k;

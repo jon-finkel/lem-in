@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/22 09:58:09 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/22 13:34:18 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,25 +82,26 @@ static int				do_matrix(t_lemin *lemin, const char *line)
 	KTHXBYE;
 }
 
-void					parse(t_lemin *lemin, bool links, t_flag flag)
+void					parse(t_lemin *lemin, bool link, t_flag flag)
 {
 	char		*line;
 
 	while (get_next_line(STDIN_FILENO, &line))
 	{
-		if (!_ANTS && line[0] != '#')
+		if (!_ANTS)
 		{
-			while (line[++lemin->debug_len])
+			while (line[0] != '#' && line[++lemin->debug_len])
 				if (!ft_isdigit(line[lemin->debug_len]))
 					errhdl(lemin, NULL, line, E_FIRSTLINE);
-			if (ft_strlen(line) > 10 || (_ANTS = ft_atoi(line)) < 1)
+			if (line[0] != '#'
+				&& (ft_strlen(line) > 10 || (_ANTS = ft_atoi(line)) < 1))
 				errhdl(lemin, NULL, line, E_FIRSTLINE);
 		}
-		else if (!links && line[0] == '#' && !get_flag(lemin, line, &flag))
+		else if (!link && line[0] == '#' && !get_flag(lemin, line, &flag))
 			MOAR;
 		else if (line[0] == 'L')
 			errhdl(lemin, NULL, line, E_BADNAME);
-		else if ((!links && (links = add_room(lemin, line, &flag))) || links)
+		else if ((!link && (link = add_room(lemin, line, &flag, -1))) || link)
 			if (do_matrix(lemin, line) == -1)
 				finish_read(lemin, line);
 		copy_line(lemin, line);

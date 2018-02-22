@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 20:51:17 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/21 18:43:40 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/22 13:33:15 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ static bool			add_vec(t_lemin *lemin, struct s_room *room, t_flag *flag)
 	GIMME(false);
 }
 
-bool				add_room(t_lemin *lemin, const char *line, t_flag *flag)
+bool				add_room(t_lemin *lemin, const char *line, t_flag *flag,
+					int k)
 {
 	struct s_room		*room;
 
@@ -88,6 +89,9 @@ bool				add_room(t_lemin *lemin, const char *line, t_flag *flag)
 	while (line[_LEN] && line[_LEN] != ' ')
 		++_LEN;
 	room->name = ft_strndup(line, _LEN);
+	while (room->name[++k])
+		if (!ft_isprint(room->name[k]))
+			errhdl(lemin, NULL, line, E_ROOMINVALID);
 	check_coord(lemin, line);
 	if (!line[++_LEN] || !ft_isdigit(line[_LEN]))
 		errhdl(lemin, NULL, line, E_ROOMNOXY);
