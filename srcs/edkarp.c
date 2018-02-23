@@ -6,11 +6,12 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 08:14:23 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/23 16:35:37 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 17:28:27 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
+
 #define _HEAD ((t_path *)(deq->head->data))
 #define _TAIL ((t_path *)(deq->tail->data))
 #define _POS _HEAD->rooms[_HEAD->len - 1]
