@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 22:12:52 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/23 18:11:00 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 18:25:29 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void				debug_output(const t_lemin *lemin)
 	ft_printf("Number of ants - %d\n", _ANTS);
 	ft_printf("Number of rooms - %hu\n", _NB);
 	ft_printf("Number of links - %zu\n", _LINKS);
-	if (!_DEBUG_MATRIX)
+	if (_DEBUG_MATRIX)
 	{
 		display_rooms(lemin, ft_intlen(_NB));
 		display_matrix(lemin, ft_intlen(_NB) + 3);

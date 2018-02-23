@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/23 18:21:49 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 18:29:07 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static void			usage(t_lemin *lemin, int argc, const char *argv[])
 	}
 	else if (argc > 3 && ft_printf("%s", g_usage[0]))
 		exit(EXIT_SUCCESS);
+	_DEBUG_MATRIX = (_DEBUG_MATRIX ? false : true);
 }
 
 static void			sort_vector(t_lemin *lemin)
