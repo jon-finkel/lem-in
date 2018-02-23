@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 22:12:52 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/23 17:21:55 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 18:11:00 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ static void			display_matrix(const t_lemin *lemin, size_t len)
 		ft_printf(" -");
 	k = -1;
 	len -= 3;
-	while (++k < _NB && (p = -1))
-	{
-		ft_printf("\n%0*d |", len, k);
+	while (++k < _NB && (p = -1) && ft_printf("\n%0*d |", len, k))
 		while (++p < _NB)
 		{
 			if (_MATRIX[k][p])
@@ -50,17 +48,13 @@ static void			display_matrix(const t_lemin *lemin, size_t len)
 			else
 				ft_printf(" {1a}0{eoc}");
 		}
-	}
+	write(STDOUT_FILENO, "\n", 1);
 }
 
 static void			display_rooms(const t_lemin *lemin, const size_t len)
 {
 	int		k;
 
-	ft_printf("{1c}%s{eoc}\n", g_debug[1]);
-	ft_printf("Number of ants - %d\n", _ANTS);
-	ft_printf("Number of rooms - %hu\n", _NB);
-	ft_printf("Number of links - %zu\n", _LINKS);
 	ft_printf("\n{1c}%s{eoc}\n", g_debug[2]);
 	k = -1;
 	while (++k < _NB)
@@ -80,9 +74,16 @@ void				debug_output(const t_lemin *lemin)
 	uint16_t		p;
 
 	ft_printf("\n{c}%s{eoc}\n", g_debug[0]);
-	display_rooms(lemin, ft_intlen(_NB));
-//	display_matrix(lemin, ft_intlen(_NB) + 3);
-	ft_printf("\n\n{1c}%s{eoc}\n", g_debug[6]);
+	ft_printf("{1c}%s{eoc}\n", g_debug[1]);
+	ft_printf("Number of ants - %d\n", _ANTS);
+	ft_printf("Number of rooms - %hu\n", _NB);
+	ft_printf("Number of links - %zu\n", _LINKS);
+	if (!_DEBUG_MATRIX)
+	{
+		display_rooms(lemin, ft_intlen(_NB));
+		display_matrix(lemin, ft_intlen(_NB) + 3);
+	}
+	ft_printf("\n{1c}%s{eoc}\n", g_debug[6]);
 	k = -1;
 	while (_PATH[++k] && (p = -1))
 		while (++p < _PATH[k]->len)

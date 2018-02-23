@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/23 07:48:36 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 18:03:31 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define _ANTS lemin->ants
 # define _CHECK lemin->check
 # define _DEBUG lemin->debug
+# define _DEBUG_MATRIX lemin->debug_matrix
 # define _END lemin->end
 # define _FILE lemin->file
 # define _HIT lemin->s_flow.__hit
@@ -68,6 +69,7 @@ typedef enum		s_flag
 typedef struct		s_lemin
 {
 	bool			debug;
+	bool			debug_matrix;
 	bool			*check;
 	bool			**matrix;
 	char			**file;

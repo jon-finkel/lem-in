@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/23 07:44:08 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 18:21:49 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static const char		*g_usage[2] =
 {
-	"usage: lem-in [-d || -r] < map_file\n\n"\
+	"usage: lem-in [-dn || -r] < map_file\n\n"\
 	"-d  --debug        enable debug mode\n"\
+	"-n  --no-matrix    disable adjacency matrix display for debug mode\n"\
 	"-r  --rules        display parsing rules\n",
 	"A valid map file is defined as follows:\n"\
-	" - first line should contain a valid number of ants\n"\
-	" - comments can be inserted before the first line but the first valid "\
-	"line must contain the number of ants\n"\
+	" - the first valid line should contain a valid number of ants\n"\
+	" - comments can be inserted before the first line but will be ignored\n"\
 	" - the number of ants should fit in a signed integer\n"\
 	" - the next lines should respect the format [n x y] where:\n"\
 	"   * n is the name of the room\n"\
@@ -30,7 +30,6 @@ static const char		*g_usage[2] =
 	"   * x must be a positive integer that represents the room's X axis\n"\
 	"   * y must be a positive integer that represents the room's Y axis\n"\
 	"   * two rooms cannot have the same coordinates\n"\
-	" - the number of rooms should fit in an unsigned 16bits integer\n"\
 	" - preceding any room definition, a comment beginning by any number of "\
 	"hashtags can modify the properties of the following room:\n"\
 	"   * ##start will define the room as the ants starting point\n"\
@@ -46,32 +45,29 @@ static const char		*g_usage[2] =
 	" - program will still try to proceed with the valid lines acquired\n"
 };
 
-static bool			usage(int argc, const char *argv[])
+static void			usage(t_lemin *lemin, int argc, const char *argv[])
 {
-	bool		debug;
-
-	debug = false;
-	if (argc == 2)
+	if (argc == 2 || argc == 3)
 	{
-		if (ft_strequ(argv[1], "-d") || (ft_strequ(argv[1], "--debug")))
-			debug = true;
-		else if (ft_strequ(argv[1], "-r") || (ft_strequ(argv[1], "--rules")))
+		if (ft_strequ(argv[1], "-d") || (ft_strequ(argv[1], "--debug"))
+			|| (ft_strequ(argv[1], "-dn") && (_DEBUG_MATRIX = true)))
 		{
-			ft_printf("%s", g_usage[1]);
-			exit(EXIT_SUCCESS);
+			_DEBUG = true;
+			if (argc == 3 && (ft_strequ(argv[2], "-n")
+				|| ft_strequ(argv[2], "--no-matrix")))
+				_DEBUG_MATRIX = true;
+			else if (argc == 3 && ft_printf("%s", g_usage[0]))
+				exit(EXIT_SUCCESS);
 		}
-		else
-		{
-			ft_printf("%s", g_usage[0]);
+		else if ((ft_strequ(argv[1], "-r") || (ft_strequ(argv[1], "--rules")))
+			&& ft_printf("%s", g_usage[1]))
 			exit(EXIT_SUCCESS);
-		}
+		else if (!ft_strequ(argv[1], "-n") && !ft_strequ(argv[1], "--no-matrix")
+			&& ft_printf("%s", g_usage[0]))
+			exit(EXIT_SUCCESS);
 	}
-	else if (argc > 2)
-	{
-		ft_printf("%s", g_usage[0]);
+	else if (argc > 3 && ft_printf("%s", g_usage[0]))
 		exit(EXIT_SUCCESS);
-	}
-	GIMME(debug);
 }
 
 static void			sort_vector(t_lemin *lemin)
@@ -106,7 +102,7 @@ static void			print_debug(t_lemin *lemin)
 	_FILE = NULL;
 }
 
-void				cleanup(t_lemin *lemin)
+static void			cleanup(t_lemin *lemin)
 {
 	extern t_vector		*g_paths;
 	extern t_vector		*g_rooms;
@@ -121,7 +117,7 @@ int					main(int argc, const char *argv[])
 	t_lemin		*lemin;
 
 	lemin = (t_lemin *)ft_memalloc(sizeof(t_lemin));
-	_DEBUG = usage(argc, argv);
+	usage(lemin, argc, argv);
 	_END = UINT32_MAX;
 	_START = UINT32_MAX;
 	lemin->debug_len = -1;
