@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 22:12:52 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/22 11:24:37 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 17:21:55 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void				debug_output(const t_lemin *lemin)
 
 	ft_printf("\n{c}%s{eoc}\n", g_debug[0]);
 	display_rooms(lemin, ft_intlen(_NB));
-	display_matrix(lemin, ft_intlen(_NB) + 3);
+//	display_matrix(lemin, ft_intlen(_NB) + 3);
 	ft_printf("\n\n{1c}%s{eoc}\n", g_debug[6]);
 	k = -1;
 	while (_PATH[++k] && (p = -1))

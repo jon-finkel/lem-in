@@ -6,11 +6,12 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/22 13:34:18 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 08:14:25 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
+
 #define BUFF_SIZE 4096
 
 static int				get_flag(t_lemin *lemin, char *line, t_flag *flag)

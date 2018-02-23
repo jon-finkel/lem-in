@@ -6,12 +6,11 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 11:10:01 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/21 18:43:09 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 07:48:39 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
-#define _LINE lemin->debug_line
 
 static const char		*g_err[ERRNUM] =
 {

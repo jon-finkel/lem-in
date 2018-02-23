@@ -6,11 +6,12 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 20:51:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/22 19:36:11 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 08:14:21 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
+
 #define _TARGET _PATH[k]->rooms[p + 1]
 
 static bool			check_opt(const t_lemin *lemin, const int ants, const int k)

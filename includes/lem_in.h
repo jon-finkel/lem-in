@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/22 13:33:42 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 07:48:36 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # define _FILE lemin->file
 # define _HIT lemin->s_flow.__hit
 # define _HIT_PATH lemin->s_flow.__hit_path
+# define _LEN lemin->debug_len
+# define _LINE lemin->debug_line
 # define _LINKS lemin->links
 # define _MATRIX lemin->matrix
 # define _MOVES lemin->moves
@@ -54,11 +56,12 @@ typedef enum		s_error
 
 typedef enum		s_flag
 {
-	E_VOID = 1,
-	E_START = 21,
-	E_END = 42,
+	E_VOID,
+	E_START,
+	E_END,
 	E_FILE,
-	E_MATRIX,
+	E_PATHS,
+	E_ROOMS,
 	E_REDIRECT
 }					t_flag;
 

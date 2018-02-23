@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/22 13:26:42 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 07:44:08 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void			sort_vector(t_lemin *lemin)
 				ft_swap(&_PATH[p], &_PATH[p + 1], sizeof(t_path **));
 }
 
-static void			print_debug_and_clean(t_lemin *lemin)
+static void			print_debug(t_lemin *lemin)
 {
 	extern t_vector		*g_file;
 	uint16_t			k;
@@ -101,9 +101,19 @@ static void			print_debug_and_clean(t_lemin *lemin)
 	while (++k < _NB)
 		free(_MATRIX[k]);
 	ft_memdel((void **)&_MATRIX);
-	ft_vecclear(g_file, vdtor);
+	ft_vecclear(g_file, vdtor, E_FILE);
 	g_file = NULL;
 	_FILE = NULL;
+}
+
+void				cleanup(t_lemin *lemin)
+{
+	extern t_vector		*g_paths;
+	extern t_vector		*g_rooms;
+
+	ft_memdel((void **)&_CHECK);
+	ft_vecclear(g_paths, vdtor, E_PATHS);
+	ft_vecclear(g_rooms, vdtor, E_ROOMS);
 }
 
 int					main(int argc, const char *argv[])
@@ -122,7 +132,8 @@ int					main(int argc, const char *argv[])
 	_CHECK = (bool *)ft_memalloc(sizeof(bool) * _NB);
 	_CHECK[_START] = true;
 	edmonds_karp(lemin);
-	print_debug_and_clean(lemin);
+	print_debug(lemin);
 	move(lemin, _ANTS);
+	cleanup(lemin);
 	KTHXBYE;
 }

@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 10:50:56 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/21 16:42:45 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 07:41:34 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,17 @@ void					dqtor(void *data, size_t data_size, va_list ap)
 
 void					vdtor(void *data, va_list ap)
 {
-	(void)ap;
-	free(*(char **)data);
+	t_flag		flag;
+
+	if ((flag = va_arg(ap, t_flag)) == E_FILE)
+		ft_memdel((void **)&*(char **)data);
+	else if (flag == E_PATHS)
+		ft_memdel((void **)&*(t_path **)data);
+	else
+	{
+		ft_strdel(&(*(struct s_room **)data)->name);
+		ft_memdel((void **)&*(struct s_room **)data);
+	}
 }
 
 void					copy_line(t_lemin *lemin, char *line)
