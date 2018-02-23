@@ -6,18 +6,15 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/11 20:51:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/23 08:14:21 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/23 18:48:37 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
+#define _POS _PATH[k]->rooms[p]
+#define _P_LEN(x) _PATH[(x)]->len
 #define _TARGET _PATH[k]->rooms[p + 1]
-
-static bool			check_opt(const t_lemin *lemin, const int ants, const int k)
-{
-	GIMME(_PATH[k]->len > ants + _PATH[0]->len);
-}
 
 static bool			check_ant(const t_lemin *lemin, int *ants, uint16_t *colony,
 					const int x)
@@ -28,13 +25,11 @@ static bool			check_ant(const t_lemin *lemin, int *ants, uint16_t *colony,
 	k = -1;
 	while (_PATH[++k] && (p = -1))
 	{
-		if (k > 0 && colony[x] == _START && check_opt(lemin, *ants, k))
+		if (k > 0 && colony[x] == _START && _P_LEN(k) > *ants + _P_LEN(0))
 			NOMOAR;
 		while (++p < _PATH[k]->len)
-			if (colony[x] == _PATH[k]->rooms[p])
+			if (colony[x] == _POS && (!_CHECK[_TARGET] || _TARGET == _END))
 			{
-				if (_TARGET != _END && _CHECK[_TARGET])
-					MOAR;
 				colony[x] == _START ? --(*ants) : 0;
 				_CHECK[colony[x]] = false;
 				colony[x] = _TARGET;
