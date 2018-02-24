@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/24 16:28:51 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/24 17:17:34 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define _PATH lemin->paths
 # define _ROOM lemin->rooms
 # define _START lemin->start
+# define _TP lemin->tp
 # define _VALID_PATHS lemin->valid_paths
 
 typedef enum		s_error
@@ -71,6 +72,7 @@ typedef struct		s_lemin
 {
 	bool			debug;
 	bool			debug_matrix;
+	bool			tp;
 	bool			*check;
 	bool			**matrix;
 	char			**file;
@@ -110,6 +112,7 @@ struct				s_room
 
 extern bool			add_room(t_lemin *lemin, const char *line, t_flag *flag,
 					int k);
+extern t_path		*bfs(t_lemin *lemin, bool *check, const t_flag flag);
 extern void			edmonds_karp(t_lemin *lemin);
 extern void			copy_line(t_lemin *lemin, char *line);
 extern void			debug_output(const t_lemin *lemin);

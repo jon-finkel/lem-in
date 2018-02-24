@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/23 18:29:07 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/24 17:36:43 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ static void			cleanup(t_lemin *lemin)
 	ft_memdel((void **)&_CHECK);
 	ft_vecclear(g_paths, vdtor, E_PATHS);
 	ft_vecclear(g_rooms, vdtor, E_ROOMS);
+	ft_memdel((void **)&lemin);
 }
 
 int					main(int argc, const char *argv[])

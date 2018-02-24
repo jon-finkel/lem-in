@@ -6,15 +6,12 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 08:14:23 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/24 17:04:46 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/24 17:29:42 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-#define _HEAD ((t_path *)(deq->head->data))
-#define _TAIL ((t_path *)(deq->tail->data))
-#define _POS _HEAD->rooms[_HEAD->len - 1]
 #define _LEN_P1_P2 (path1->len - 2 + path2->len - 2)
 #define _LEN_HIT (_PATH[_HIT_PATH]->len - 2)
 #define _NEW_MOVES (_MOVES - _LEN_HIT + _LEN_P1_P2)
@@ -24,97 +21,31 @@
 t_vector		g_paths_null = {NULL, 0, 0, sizeof(t_path *)};
 t_vector		*g_paths = &g_paths_null;
 
-static t_path			*clear_deq(t_lemin *lemin, t_deque *deq,
-						const t_flag flag)
+static void				clear_check(t_lemin *lemin, const t_path *path, int k,
+						const uint16_t stop)
 {
-	uint16_t		k;
-	t_path			*path;
-
-	path = (t_path *)ft_memalloc(sizeof(t_path));
-	ft_memmove(path, _TAIL, sizeof(*_TAIL));
-	ft_deqdel(&deq, dqtor);
-	k = -1;
-	while (++k < path->len - 1)
-		_CHECK[path->rooms[k]] = true;
-	if (flag != E_REDIRECT)
-	{
-		_MOVES += path->len - 2;
-		++_VALID_PATHS;
-	}
-	GIMME(path);
+	while (++k < stop)
+		_CHECK[path->rooms[k]] = false;
 }
 
-static bool				is_hit(t_lemin *lemin, bool *check, const uint16_t x)
-{
-	bool			stop;
-	uint16_t		p;
-	uintmax_t		k;
-
-	stop = false;
-	if (check[x] == false)
-		GIMME(false);
-	else if (!_MATRIX[_START][x] && x != _START && _CHECK[x] == true)
-	{
-		if (_HIT == false && (k = -1))
-			while (stop == false && _PATH[++k] && (p = -1))
-				while (stop == false && ++p < _PATH[k]->len)
-					if (x == _PATH[k]->rooms[p] && (stop = true))
-					{
-						_HIT_X = p;
-						_HIT_PATH = k;
-					}
-		_HIT = true;
-	}
-	GIMME(true);
-}
-
-static t_path			*bfs(t_lemin *lemin, bool *check, const t_flag flag)
-{
-	t_deque			*deq;
-	t_path			*path;
-	uint16_t		k;
-
-	deq = (t_deque *)ft_memalloc(sizeof(t_deque));
-	path = (t_path *)ft_memalloc(sizeof(t_path));
-	path->rooms[path->len++] = _START;
-	ft_deqadd(deq, ft_dlstnew(path, sizeof(*path)));
-	free(path);
-	while (deq->head && (k = -1))
-	{
-		while (++k < _NB)
-			if (_MATRIX[_POS][k] && !is_hit(lemin, check, k))
-			{
-				ft_deqappend(deq, ft_dlstnew(_HEAD, sizeof(*_HEAD)));
-				_TAIL->rooms[_TAIL->len++] = k;
-				if (k == _END)
-					GIMME(clear_deq(lemin, deq, flag));
-				check[k] = true;
-			}
-		ft_deqpop(deq, dqtor);
-	}
-	ft_memdel((void **)&deq);
-	ZOMG;
-}
-
-static t_path			*redirect_flow(t_lemin *lemin, bool *check)
+static t_path			*redirect_flow(t_lemin *lemin, t_path *old, bool *check)
 {
 	bool			backup[_NB];
 	t_path			*path1;
 	t_path			*path2;
-	uint16_t		k;
 
 	ft_memmove(backup, _CHECK, sizeof(bool) * _NB);
-	k = _HIT_X - 1;
-	while (++k < _PATH[_HIT_PATH]->len)
-		_CHECK[_PATH[_HIT_PATH]->rooms[k]] = false;
+	clear_check(lemin, _PATH[_HIT_PATH], _HIT_X - 1, _PATH[_HIT_PATH]->len);
+	if (old)
+		clear_check(lemin, old, 0, old->len);
 	ft_memmove(check, _CHECK, sizeof(bool) * _NB);
 	path1 = bfs(lemin, check, E_REDIRECT);
-	k = -1;
-	while (++k < _HIT_X)
-		_CHECK[_PATH[_HIT_PATH]->rooms[k]] = false;
+	clear_check(lemin, _PATH[_HIT_PATH], -1, _HIT_X);
 	ft_memmove(check, _CHECK, sizeof(bool) * _NB);
 	if ((path2 = bfs(lemin, check, E_REDIRECT)) && _NEW_FLOW < _OLD_FLOW)
 	{
+		if (old)
+			ft_memdel((void **)&old);
 		_MOVES = _NEW_MOVES;
 		++_VALID_PATHS;
 		ft_memmove(_PATH[_HIT_PATH], path2, sizeof(t_path));
@@ -123,7 +54,7 @@ static t_path			*redirect_flow(t_lemin *lemin, bool *check)
 	}
 	free(path1);
 	ft_memmove(_CHECK, backup, sizeof(bool) * _NB);
-	ZOMG;
+	GIMME(old);
 }
 
 void					edmonds_karp(t_lemin *lemin)
@@ -135,8 +66,8 @@ void					edmonds_karp(t_lemin *lemin)
 	{
 		ft_memmove(check, _CHECK, sizeof(bool) * _NB);
 		_HIT = false;
-		if ((path = bfs(lemin, check, E_VOID))
-			|| (_HIT && (path = redirect_flow(lemin, check))))
+		if (((path = bfs(lemin, check, E_VOID)) && !_HIT)
+			|| (_HIT && (path = redirect_flow(lemin, path, check))))
 			*(t_path **)ft_vecpush(g_paths) = path;
 		else
 			NOMOAR;

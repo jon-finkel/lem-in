@@ -6,7 +6,7 @@
 #    By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/06 20:54:44 by nfinkel           #+#    #+#              #
-#    Updated: 2018/02/19 20:50:51 by nfinkel          ###   ########.fr        #
+#    Updated: 2018/02/24 17:35:54 by nfinkel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ OBJDIR :=					./build/
 SRCS_DIR :=					./srcs/
 
 #	Sources
-SRC +=						main.c edkarp.c move.c parser.c parser2.c
+SRC +=						main.c bfs.c edkarp.c move.c parser.c parser2.c
 SRC +=						debug.c errhdl.c misc.c
 
 OBJECTS =					$(patsubst %.c,$(OBJDIR)%.o,$(SRCS))
@@ -75,7 +75,7 @@ clean:
 debug: CC := clang
 debug: DEBUG := -g3 -fsanitize=address -fno-omit-frame-pointer -fsanitize=undefined 
 debug: FLAGS :=
-debug: fclean all
+debug: re
 
 fclean: clean
 	@/bin/rm -f $(NAME)
@@ -92,7 +92,11 @@ purge: fclean
 
 re: fclean all
 
-.PHONY: all cat clean debug fclean libft noflags purge re
+valgrind: DEBUG := -ggdb3 
+valgrind: FLAGS :=
+valgrind: re
+
+.PHONY: all cat clean debug fclean libft noflags purge re valgrind
 
 #################
 ##  WITH LOVE  ##

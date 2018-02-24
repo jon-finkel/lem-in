@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/23 08:14:25 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/24 17:43:34 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int				map_link(t_lemin *lemin, const char *line)
 	int			a;
 	int			b;
 
-	ft_memnccpy(n1, line, (int)'-', BUFF_SIZE);
+	ft_memnccpy(n1, line, '-', BUFF_SIZE);
 	ft_snprintf(n2, BUFF_SIZE, "%s", line + lemin->debug_len + 1);
 	a = -1;
 	b = -1;
