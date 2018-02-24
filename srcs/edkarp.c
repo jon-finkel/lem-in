@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 08:14:23 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/24 17:29:42 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/24 20:47:14 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ static t_path			*redirect_flow(t_lemin *lemin, t_path *old, bool *check)
 
 	ft_memmove(backup, _CHECK, sizeof(bool) * _NB);
 	clear_check(lemin, _PATH[_HIT_PATH], _HIT_X - 1, _PATH[_HIT_PATH]->len);
-	if (old)
-		clear_check(lemin, old, 0, old->len);
+	old ? clear_check(lemin, old, 0, old->len) : 0;
 	ft_memmove(check, _CHECK, sizeof(bool) * _NB);
 	path1 = bfs(lemin, check, E_REDIRECT);
 	clear_check(lemin, _PATH[_HIT_PATH], -1, _HIT_X);
@@ -49,10 +48,11 @@ static t_path			*redirect_flow(t_lemin *lemin, t_path *old, bool *check)
 		_MOVES = _NEW_MOVES;
 		++_VALID_PATHS;
 		ft_memmove(_PATH[_HIT_PATH], path2, sizeof(t_path));
-		free(path2);
+		ft_memdel((void **)&path2);
 		GIMME(path1);
 	}
-	free(path1);
+	ft_memdel((void **)&path1);
+	path2 ? ft_memdel((void **)&path2) : 0;
 	ft_memmove(_CHECK, backup, sizeof(bool) * _NB);
 	GIMME(old);
 }
