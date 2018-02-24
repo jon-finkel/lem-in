@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/23 18:03:31 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/24 16:28:51 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define _END lemin->end
 # define _FILE lemin->file
 # define _HIT lemin->s_flow.__hit
+# define _HIT_X lemin->s_flow.__hit_x
 # define _HIT_PATH lemin->s_flow.__hit_path
 # define _LEN lemin->debug_len
 # define _LINE lemin->debug_line
@@ -79,6 +80,7 @@ typedef struct		s_lemin
 	struct
 	{
 		bool		__hit;
+		uint16_t	__hit_x;
 		uintmax_t	__hit_path;
 	}				s_flow;
 	struct s_path	**paths;
