@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/24 20:36:20 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/25 09:26:38 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void					parse(t_lemin *lemin, bool link, t_flag flag)
 				NOMOAR;
 		copy_line(lemin, line);
 	}
-	if (!lemin->links)
-		errhdl(lemin, NULL, line, E_NOLINKS);
 	line ? ft_strdel(&line) : 0;
+	if (!lemin->links)
+		errhdl(lemin, NULL, NULL, E_NOLINKS);
 }

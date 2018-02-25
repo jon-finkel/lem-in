@@ -6,14 +6,14 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 10:50:56 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/23 07:41:34 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/25 09:17:01 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-t_vector		g_file_null = {NULL, 0, 0, sizeof(char *)};
-t_vector		*g_file = &g_file_null;
+t_vary		g_file_null = {NULL, 0, 0, sizeof(char *)};
+t_vary		*g_file = &g_file_null;
 
 _Noreturn void			ft_errhdl(void **aptr, size_t size, int errcode)
 {
@@ -47,7 +47,7 @@ void					vdtor(void *data, va_list ap)
 
 void					copy_line(t_lemin *lemin, char *line)
 {
-	*(char **)ft_vecpush(g_file) = ft_strdup(line);
+	*(char **)ft_varypush(g_file) = ft_strdup(line);
 	_FILE = g_file->buff;
 	++lemin->debug_line;
 	ft_strdel(&line);

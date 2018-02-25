@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 08:14:23 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/24 20:47:14 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/25 09:16:07 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 #define _NEW_FLOW ((_ANTS + _NEW_MOVES) / (_VALID_PATHS + 1))
 #define _OLD_FLOW ((_ANTS + _MOVES) / _VALID_PATHS)
 
-t_vector		g_paths_null = {NULL, 0, 0, sizeof(t_path *)};
-t_vector		*g_paths = &g_paths_null;
+t_vary		g_paths_null = {NULL, 0, 0, sizeof(t_path *)};
+t_vary		*g_paths = &g_paths_null;
 
 static void				clear_check(t_lemin *lemin, const t_path *path, int k,
 						const uint16_t stop)
@@ -68,7 +68,7 @@ void					edmonds_karp(t_lemin *lemin)
 		_HIT = false;
 		if (((path = bfs(lemin, check, E_VOID)) && !_HIT)
 			|| (_HIT && (path = redirect_flow(lemin, path, check))))
-			*(t_path **)ft_vecpush(g_paths) = path;
+			*(t_path **)ft_varypush(g_paths) = path;
 		else
 			NOMOAR;
 		_PATH = g_paths->buff;

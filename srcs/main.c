@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:08 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/24 20:48:46 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/25 09:27:03 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void			usage(t_lemin *lemin, int argc, const char *argv[])
 	_DEBUG_MATRIX = (_DEBUG_MATRIX ? false : true);
 }
 
-static void			sort_vector(t_lemin *lemin)
+static void			sort_vary(t_lemin *lemin)
 {
 	uintmax_t		k;
 	uintmax_t		p;
@@ -85,32 +85,32 @@ static void			sort_vector(t_lemin *lemin)
 
 static void			print_debug(t_lemin *lemin)
 {
-	extern t_vector		*g_file;
+	extern t_vary		*g_file;
 	uint16_t			k;
 
 	k = -1;
 	while (_FILE[++k])
 		ft_printf("%r\n", _FILE[k]);
-	sort_vector(lemin);
+	sort_vary(lemin);
 	if (_DEBUG)
 		debug_output(lemin);
 	k = -1;
 	while (++k < _NB)
 		free(_MATRIX[k]);
 	ft_memdel((void **)&_MATRIX);
-	ft_vecclear(g_file, vdtor, E_FILE);
+	ft_varydel(&g_file, vdtor, E_FILE);
 	g_file = NULL;
 	_FILE = NULL;
 }
 
 static void			cleanup(t_lemin *lemin)
 {
-	extern t_vector		*g_paths;
-	extern t_vector		*g_rooms;
+	extern t_vary		*g_paths;
+	extern t_vary		*g_rooms;
 
 	ft_memdel((void **)&_CHECK);
-	ft_vecclear(g_paths, vdtor, E_PATHS);
-	ft_vecclear(g_rooms, vdtor, E_ROOMS);
+	ft_varydel(&g_paths, vdtor, E_PATHS);
+	ft_varydel(&g_rooms, vdtor, E_ROOMS);
 	ft_memdel((void **)&lemin);
 }
 

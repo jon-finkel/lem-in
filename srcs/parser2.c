@@ -6,14 +6,14 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 20:51:17 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/23 18:24:54 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/25 09:17:13 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-t_vector		g_rooms_null = {NULL, 0, 0, sizeof(struct s_room *)};
-t_vector		*g_rooms = &g_rooms_null;
+t_vary		g_rooms_null = {NULL, 0, 0, sizeof(struct s_room *)};
+t_vary		*g_rooms = &g_rooms_null;
 
 static void			check_coord(const t_lemin *lemin, const char *line)
 {
@@ -65,7 +65,7 @@ static bool			check_link(const t_lemin *lemin, const char *line)
 
 static bool			add_vec(t_lemin *lemin, struct s_room *room, t_flag *flag)
 {
-	*(struct s_room **)ft_vecpush(g_rooms) = room;
+	*(struct s_room **)ft_varypush(g_rooms) = room;
 	_ROOM = g_rooms->buff;
 	if (*flag == E_START)
 		_START = _NB;
