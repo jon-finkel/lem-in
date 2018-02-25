@@ -6,7 +6,7 @@
 #    By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/06 20:54:44 by nfinkel           #+#    #+#              #
-#    Updated: 2018/02/25 10:04:27 by nfinkel          ###   ########.fr        #
+#    Updated: 2018/02/25 17:12:13 by nfinkel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,6 @@ O_FLAG :=					-O2
 #	Directories
 LIBFTDIR =					./libft/
 OBJDIR :=					./build/
-VISUDIR :=					./visualizer/
 
 SRCS_DIR :=					./srcs/
 
@@ -53,7 +52,7 @@ vpath %.c $(SRCS_DIR)
 ##    RULES    ##
 #################
 
-all: libft visualizer $(NAME)
+all: libft $(NAME)
 
 $(NAME): $(OBJECTS)
 	@$(CC) $(DEBUG) $(FLAGS) $(O_FLAG) $(patsubst %.c,$(OBJDIR)%.o,$(notdir $(SRCS))) -L $(LIBFTDIR) -lft -o $@
@@ -89,7 +88,7 @@ noflags: FLAGS :=
 noflags: re
 
 purge: fclean
-	@$(MAKE) purge -C $(VISUDIR)
+	@$(MAKE) fclean -C $(LIBFTDIR)
 
 re: fclean all
 
@@ -97,10 +96,7 @@ valgrind: DEBUG := -ggdb3
 valgrind: FLAGS :=
 valgrind: re
 
-visualizer:
-	@$(MAKE) -C $(VISUDIR)
-
-.PHONY: all cat clean debug fclean libft noflags purge re valgrind visualizer
+.PHONY: all cat clean debug fclean libft noflags purge re valgrind
 
 #################
 ##  WITH LOVE  ##
