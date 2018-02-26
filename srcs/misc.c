@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 10:50:56 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/25 09:54:47 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/26 04:03:47 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,10 @@ void					copy_line(t_lemin *lemin, char *line)
 	ft_strdel(&line);
 }
 
-int						finish_read(t_lemin *lemin, char **line)
+int						finish_read(t_lemin *lemin, char *line)
 {
-	copy_line(lemin, *line);
-	while (get_next_line(STDIN_FILENO, line))
-		copy_line(lemin, *line);
-	*line = NULL;
+	copy_line(lemin, line);
+	while (get_next_line(STDIN_FILENO, &line))
+		copy_line(lemin, line);
 	KTHXBYE;
 }

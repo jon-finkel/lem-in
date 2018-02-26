@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 20:56:49 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/25 09:54:21 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/26 04:02:19 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ extern void			copy_line(t_lemin *lemin, char *line);
 extern void			debug_output(const t_lemin *lemin);
 extern void			errhdl(const t_lemin *lemin, const struct s_room *room,
 					const char *line, t_error err);
-extern int			finish_read(t_lemin *lemin, char **line);
+extern int			finish_read(t_lemin *lemin, char *line);
 extern void			move(const t_lemin *lemin, int ants);
 extern void			parse(t_lemin *lemin, bool link, t_flag flag);
 

@@ -6,7 +6,7 @@
 /*   By: nfinkel <nfinkel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:09:14 by nfinkel           #+#    #+#             */
-/*   Updated: 2018/02/25 09:54:23 by nfinkel          ###   ########.fr       */
+/*   Updated: 2018/02/26 04:03:31 by nfinkel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,10 @@ void					parse(t_lemin *lemin, bool link, t_flag flag)
 		else if (line[0] == 'L')
 			errhdl(lemin, NULL, line, E_BADNAME);
 		else if ((!link && (link = add_room(lemin, line, &flag, -1))) || link)
-			if (do_matrix(lemin, line) == -1 && !finish_read(lemin, &line))
+			if (do_matrix(lemin, line) == -1 && !finish_read(lemin, line))
 				NOMOAR;
 		copy_line(lemin, line);
 	}
-	line ? ft_strdel(&line) : 0;
 	if (!lemin->links)
 		errhdl(lemin, NULL, NULL, E_NOLINKS);
 }
