@@ -1,10 +1,10 @@
 # LEM-IN - @42Born2Code
 
-Lem-in is an algorithm project, the 3rd in the algorithm branch here at [42][2], where ants have to go the from a starting point to and ending point as fast as possible. Refer to the [project instructions][1] for more details.
+Lem-in is an algorithm project, the 3rd in the algorithm branch here at [42][2], where ants have to go the from a starting point to and ending point as fast as possible. Refer to the [project instructions][1] for more details. Basically the goal is to implement a graph traversal algorithm.
 
 ## Algorithm
 
-I use a modify Edmonds-Karp algorithm.
+I use a custom-tailored Edmonds-Karp algorithm.
 
 Starting with a breadth-first search, I find the shortest path, and then try to add other paths with successive bfs. If there is a collision between two paths, I calculate the optimal flow with the several combination availables and keep only the best combination. It's fast, efficient and elegant.
 
