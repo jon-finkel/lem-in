@@ -46,7 +46,7 @@ L9-5 L10-5
 
 ## Installation
 
-`make`
+`cd libft ; git pull origin master ; cd .. ; make`
 
 ## Run
 
