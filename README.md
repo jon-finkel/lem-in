@@ -1,6 +1,6 @@
 # LEM-IN - @42Born2Code
 
-Lem-in is an algorithm project, the 3rd in the algorithm branch here at [2][42], where ants have to go the from a starting point to and ending point as fast as possible. Refer to the [1][project instructions] for more details.
+Lem-in is an algorithm project, the 3rd in the algorithm branch here at [42][2], where ants have to go the from a starting point to and ending point as fast as possible. Refer to the [project instructions][1] for more details.
 
 ## Algorithm
 
