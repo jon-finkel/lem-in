@@ -46,7 +46,7 @@ L9-5 L10-5
 
 ## Installation
 
-`cd libft ; git pull origin master ; cd .. ; make`
+`cd libft ; git submodule init ; git submodule update ; cd .. ; make`
 
 ## Run
 
