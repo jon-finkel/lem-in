@@ -1,4 +1,4 @@
-# LEM-IN - @42Born2Code
+# LEM IN - @42Born2Code
 
 Lem-in is an algorithm project, the 3rd in the algorithm branch here at [42][2], where ants have to go the from a starting point to and ending point as fast as possible. Refer to the [project instructions][1] for more details. Basically the goal is to implement a graph traversal algorithm.
 
